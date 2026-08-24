@@ -1,0 +1,29 @@
+GET http://127.0.0.1:8000/items/
+###
+POST http://127.0.0.1:8000/items/
+Content-Type: application/json
+
+{
+    "name": "British Museum All Day",
+    "description": "Three day",
+    "price": 4500
+
+}
+
+###
+
+PUT http://127.0.0.1:8000/items/
+content-Type: application/json
+
+{
+    "name": "British Museum All Day",
+    "description": "Two days",
+    "price": 4300.0,
+    "tax": 315.0,
+    "id": 1
+
+}
+
+###
+
+DELETE http://127.0.0.1:8000/items/5

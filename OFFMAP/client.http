@@ -1,0 +1,82 @@
+### Get all users
+GET http://127.0.0.1:8000/users/
+
+###
+
+### Get one user (id = 1)
+GET http://127.0.0.1:8000/users/2
+
+###
+
+### Create user 1 - Kendall Jenner (POST)
+POST http://127.0.0.1:8000/users/
+Content-Type: application/json
+
+{
+    "name": "Kendall Jenner",
+    "email": "kendall.jenner@example.com",
+    "password_hash": "hashed_pw_001",
+    "profile_image_url": "https://example.com/images/kendall.jpg",
+    "nationality": "American",
+    "preferred_language": "English",
+    "created_at": "2026-08-23T10:00:00",
+    "updated_at": "2026-08-23T10:00:00"
+}
+
+###
+
+### Create user 2 - Jacob Elordi (POST)
+POST http://127.0.0.1:8000/users/
+Content-Type: application/json
+
+{
+    "name": "Jacob Elordi",
+    "email": "jacob.elordi@example.com",
+    "password_hash": "hashed_pw_002",
+    "profile_image_url": "https://example.com/images/jacob.jpg",
+    "nationality": "Australian",
+    "preferred_language": "English",
+    "created_at": "2026-08-23T10:05:00",
+    "updated_at": "2026-08-23T10:05:00"
+}
+
+###
+
+### Create user 3 - Zendaya Kim (POST)
+POST http://127.0.0.1:8000/users/
+Content-Type: application/json
+
+{
+    "name": "Zendaya Kim",
+    "email": "zendaya.kim@example.com",
+    "password_hash": "hashed_pw_003",
+    "profile_image_url": "https://example.com/images/zendaya.jpg",
+    "nationality": "Korean",
+    "preferred_language": "Korean",
+    "created_at": "2026-08-23T10:10:00",
+    "updated_at": "2026-08-23T10:10:00"
+}
+
+###
+
+### Update user (PUT) - update user id 1
+PUT http://127.0.0.1:8000/users/1
+Content-Type: application/json
+
+{
+    "name": "Kendall Jenner",
+    "email": "kendall.jenner.updated@example.com",
+    "password_hash": "hashed_pw_001_new",
+    "profile_image_url": "https://example.com/images/kendall_new.jpg",
+    "nationality": "American",
+    "preferred_language": "English",
+    "created_at": "2026-08-23T10:00:00",
+    "updated_at": "2026-08-23T12:00:00"
+}
+
+###
+
+### Delete user (id = 4)
+DELETE http://127.0.0.1:8000/users/4
+
+###
