@@ -1,6 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from sqlmodel import Field, Session, SQLModel, create_engine, select
+from database import engine, init_DB
+from models import TripDB, TripOut
+
 
 class TripDB(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)

@@ -1,0 +1,71 @@
+@baseUrl = http://127.0.0.1:8000
+
+### ---- GET (Read all users) ----
+GET {{baseUrl}}/users/
+
+### ---- GET (Read one user by ID, ผ่าน SQLModel) ----
+GET {{baseUrl}}/users/1
+
+### ---- POST (Create) user 1 - Kendall Jenner ----
+POST {{baseUrl}}/users/
+Content-Type: application/json
+
+{
+    "name": "Kendall Jenner",
+    "email": "kendall.jenner@example.com",
+    "password_hash": "hashed_pw_001",
+    "profile_image_url": "https://i.pravatar.cc/300?img=1",
+    "nationality": "American",
+    "preferred_language": "English",
+    "created_at": "2026-08-30T10:00:00",
+    "updated_at": "2026-08-30T10:00:00"
+}
+
+### ---- POST (Create) user 2 - Jacob Elordi ----
+POST {{baseUrl}}/users/
+Content-Type: application/json
+
+{
+    "name": "Jacob Elordi",
+    "email": "jacob.elordi@example.com",
+    "password_hash": "hashed_pw_002",
+    "profile_image_url": "https://i.pravatar.cc/300?img=2",
+    "nationality": "Australian",
+    "preferred_language": "English",
+    "created_at": "2026-08-30T10:05:00",
+    "updated_at": "2026-08-30T10:05:00"
+}
+
+### ---- POST (Create) user 3 - Zendaya Kim ----
+POST {{baseUrl}}/users/
+Content-Type: application/json
+
+{
+    "name": "Zendaya Kim",
+    "email": "zendaya.kim@example.com",
+    "password_hash": "hashed_pw_003",
+    "profile_image_url": "https://i.pravatar.cc/300?img=3",
+    "nationality": "Korean",
+    "preferred_language": "Korean",
+    "created_at": "2026-08-30T10:10:00",
+    "updated_at": "2026-08-30T10:10:00"
+}
+
+
+### ---- PUT (Update) ----
+PUT {{baseUrl}}/users/1
+Content-Type: application/json
+
+{
+    "name": "Kendall Nicole Jenner",
+    "email": "kendall.jenner.updated@example.com",
+    "password_hash": "hashed_pw_001_new",
+    "profile_image_url": "https://i.pravatar.cc/300?img=1",
+    "nationality": "American",
+    "preferred_language": "English",
+    "created_at": "2026-08-30T10:00:00",
+    "updated_at": "2026-08-30T12:00:00"
+}
+
+### ---- DELETE user ----
+DELETE {{baseUrl}}/users/3
