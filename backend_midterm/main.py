@@ -52,8 +52,8 @@ def create_cpu(cpu: CPU) -> CPUOut:
 
 # =========================================================
 # MAINBOARD
+# ถ้าส่ง cpu_id มาด้วย จะโชว์เฉพาะเมนบอร์ดที่ socket ตรงกับ CPU ตัวนั้น
 # =========================================================
-# ถ้าส่ง cpu_id มาด้วย จะแสดงเฉพาะเมนบอร์ดที่ socket ตรงกับ CPU ตัวนั้นค่ะ
 @app.get("/mainboards/", status_code=status.HTTP_200_OK)
 def read_mainboards(cpu_id: int | None = None) -> list[MainboardOut]:
     with Session(engine) as session:
@@ -93,8 +93,8 @@ def create_mainboard(mainboard: Mainboard) -> MainboardOut:
 
 # =========================================================
 # RAM
+# ถ้าส่ง mainboard_id มาด้วย จะโชว์เฉพาะแรมชนิดเดียวกับที่เมนบอร์ดรองรับ
 # =========================================================
-# ถ้าส่ง mainboard_id มาด้วย จะแสดงเฉพาะแรมชนิดเดียวกับที่เมนบอร์ดรองรับค่ะ
 @app.get("/rams/", status_code=status.HTTP_200_OK)
 def read_rams(mainboard_id: int | None = None) -> list[RAMOut]:
     with Session(engine) as session:
@@ -196,8 +196,8 @@ def create_storage(storage: Storage) -> StorageOut:
 
 # =========================================================
 # PSU
-# =========================================================
 # ถ้าส่ง cpu_id (และ gpu_id ถ้ามีการ์ดจอ) มา จะแสดงเฉพาะ PSU ที่จ่ายไฟพอ
+# =========================================================
 @app.get("/psus/", status_code=status.HTTP_200_OK)
 def read_psus(cpu_id: int | None = None, gpu_id: int | None = None) -> list[PSUOut]:
     with Session(engine) as session:
@@ -248,9 +248,9 @@ def create_psu(psu: PSU) -> PSUOut:
 
 # =========================================================
 # CASE
+# ถ้าส่ง mainboard_id มา จะโชว์เฉพาะเคสที่ใส่เมนบอร์ดขนาดนั้นได้
+# ถ้าส่ง gpu_id มา จะโชว์เฉพาะเคสที่ใส่การ์ดจอตัวนั้นได้ (ความยาวไม่เกิน) 
 # =========================================================
-# ถ้าส่ง mainboard_id มา จะแสดงเฉพาะเคสที่ใส่เมนบอร์ดขนาดนั้นได้
-# ถ้าส่ง gpu_id มา จะแสดงเฉพาะเคสที่ใส่การ์ดจอตัวนั้นได้ (ความยาวไม่เกิน) 
 @app.get("/cases/", status_code=status.HTTP_200_OK)
 def read_cases(mainboard_id: int | None = None, gpu_id: int | None = None) -> list[CaseOut]:
     with Session(engine) as session:
@@ -352,9 +352,9 @@ def read_sets_of_customer(customer_id: int) -> list[PCSetOut]:
 
 # =========================================================
 # PC SET
-# =========================================================
 # function ใช้ตรวจว่าชิ้นส่วนใน set ใช้ร่วมกันได้ไหม
 # ถ้าผ่านทุกข้อจะคืนราคารวมของ set กลับไป
+# =========================================================
 def check_pc_set(session: Session, pc_set: PCSet) -> float:
     customer = session.get(CustomerDB, pc_set.customer_id)
     if customer is None:
@@ -398,7 +398,7 @@ def check_pc_set(session: Session, pc_set: PCSet) -> float:
             detail=f"CPU ใช้ socket {cpu.socket} แต่ Mainboard เป็น socket {mainboard.socket} ใช้ด้วยกันไม่ได้ค่ะ"
         )
 
-    # 2. แรมต้องเป็นชนิดเดียวกับที่เมนบอร์ดรองรับ (DDR4 / DDR5)
+    # 2. แรมต้องเป็นชนิดเดียวกับที่เมนบอร์ดรองรับ (DDR4/DDR5)
     if ram.memory_type != mainboard.memory_type:
         raise HTTPException(
             status_code=400,
@@ -445,7 +445,7 @@ def check_pc_set(session: Session, pc_set: PCSet) -> float:
     return total_price
 
 
-# แสดง set ทั้งหมด หรือส่ง customer_id มาเพื่อดูเฉพาะของลูกค้าคนนั้น
+# โชว์ set ทั้งหมด หรือส่ง customer_id มาเพื่อดูเฉพาะของลูกค้าคนนั้น
 @app.get("/pc-sets/", status_code=status.HTTP_200_OK)
 def read_pc_sets(customer_id: int | None = None) -> list[PCSetOut]:
     with Session(engine) as session:
@@ -467,7 +467,7 @@ def read_pc_set(set_id: int) -> PCSetOut:
     )
 
 
-# แสดง set แบบละเอียด มีชื่อรุ่นและราคาของแต่ละชิ้น อันนี้ดูอ่านง่ายกว่าดูแค่เลข id ค่ะ
+# โชว์ set แบบละเอียด มีชื่อรุ่นและราคาของแต่ละชิ้น อันนี้ดูอ่านง่ายกว่าดูแค่เลข id ค่ะ
 @app.get("/pc-sets/{set_id}/detail", status_code=status.HTTP_200_OK)
 def read_pc_set_detail(set_id: int):
     with Session(engine) as session:

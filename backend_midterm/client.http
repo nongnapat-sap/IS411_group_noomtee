@@ -5,7 +5,7 @@ GET {{baseUrl}}/docs
 
 
 ### ============================================================
-### ข้อ 1 : CPU > เพิ่มข้อมูล 10 รายการ
+### ข้อ 1 : CPU - เพิ่มข้อมูล 10 รายการ
 ### ============================================================
 ### ---- POST: CPU 1 Intel Core i3-12100F ----
 POST {{baseUrl}}/cpus/
@@ -179,7 +179,7 @@ Content-Type: application/json
 
 
 ### ============================================================
-### ข้อ 1 : CPU — แสดงข้อมูล
+### ข้อ 1 : CPU - แสดงข้อมูล
 ### ============================================================
 ### ---- GET: แสดง CPU ทั้งหมด ----
 GET {{baseUrl}}/cpus/
@@ -189,7 +189,7 @@ GET {{baseUrl}}/cpus/1
 
 
 ### ============================================================
-### ข้อ 1 : MAINBOARD — เพิ่มข้อมูล 10 รายการ
+### ข้อ 1 : MAINBOARD - เพิ่มข้อมูล 10 รายการ
 ### ============================================================
 ### ---- POST: MAINBOARD 1 ASUS PRIME H610M-E D4 ----
 POST {{baseUrl}}/mainboards/
@@ -353,7 +353,7 @@ Content-Type: application/json
 
 
 ### ============================================================
-### ข้อ 1 : MAINBOARD — แสดงข้อมูล
+### ข้อ 1 : MAINBOARD - แสดงข้อมูล
 ### ============================================================
 ### ---- GET: แสดง MAINBOARD ทั้งหมด ----
 GET {{baseUrl}}/mainboards/
@@ -363,7 +363,7 @@ GET {{baseUrl}}/mainboards/1
 
 
 ### ============================================================
-### ข้อ 1 : RAM — เพิ่มข้อมูล 10 รายการ
+### ข้อ 1 : RAM - เพิ่มข้อมูล 10 รายการ
 ### ============================================================
 ### ---- POST: RAM 1 Kingston FURY Beast 8GB (8GBx1) DDR4 3200 ----
 POST {{baseUrl}}/rams/
@@ -507,7 +507,7 @@ Content-Type: application/json
 
 
 ### ============================================================
-### ข้อ 1 : RAM — แสดงข้อมูล
+### ข้อ 1 : RAM - แสดงข้อมูล
 ### ============================================================
 ### ---- GET: แสดง RAM ทั้งหมด ----
 GET {{baseUrl}}/rams/
@@ -517,7 +517,7 @@ GET {{baseUrl}}/rams/1
 
 
 ### ============================================================
-### ข้อ 1 : GPU — เพิ่มข้อมูล 10 รายการ
+### ข้อ 1 : GPU - เพิ่มข้อมูล 10 รายการ
 ### ============================================================
 ### ---- POST: GPU 1 ASUS DUAL GeForce RTX 3050 OC 6GB ----
 POST {{baseUrl}}/gpus/
@@ -661,7 +661,7 @@ Content-Type: application/json
 
 
 ### ============================================================
-### ข้อ 1 : GPU — แสดงข้อมูล
+### ข้อ 1 : GPU - แสดงข้อมูล
 ### ============================================================
 ### ---- GET: แสดง GPU ทั้งหมด ----
 GET {{baseUrl}}/gpus/
@@ -671,7 +671,7 @@ GET {{baseUrl}}/gpus/1
 
 
 ### ============================================================
-### ข้อ 1 : STORAGE — เพิ่มข้อมูล 10 รายการ
+### ข้อ 1 : STORAGE - เพิ่มข้อมูล 10 รายการ
 ### ============================================================
 ### ---- POST: STORAGE 1 WD Blue SN580 500GB ----
 POST {{baseUrl}}/storages/
@@ -815,7 +815,7 @@ Content-Type: application/json
 
 
 ### ============================================================
-### ข้อ 1 : STORAGE — แสดงข้อมูล
+### ข้อ 1 : STORAGE - แสดงข้อมูล
 ### ============================================================
 ### ---- GET: แสดง STORAGE ทั้งหมด ----
 GET {{baseUrl}}/storages/
@@ -825,7 +825,7 @@ GET {{baseUrl}}/storages/1
 
 
 ### ============================================================
-### ข้อ 1 : PSU — เพิ่มข้อมูล 10 รายการ
+### ข้อ 1 : PSU - เพิ่มข้อมูล 10 รายการ
 ### ============================================================
 ### ---- POST: PSU 1 Thermaltake Litepower 450W ----
 POST {{baseUrl}}/psus/
@@ -949,7 +949,7 @@ Content-Type: application/json
 
 
 ### ============================================================
-### ข้อ 1 : PSU — แสดงข้อมูล
+### ข้อ 1 : PSU - แสดงข้อมูล
 ### ============================================================
 ### ---- GET: แสดง PSU ทั้งหมด ----
 GET {{baseUrl}}/psus/
@@ -959,7 +959,7 @@ GET {{baseUrl}}/psus/1
 
 
 ### ============================================================
-### ข้อ 1 : CASE — เพิ่มข้อมูล 10 รายการ
+### ข้อ 1 : CASE - เพิ่มข้อมูล 10 รายการ
 ### ============================================================
 ### ---- POST: CASE 1 Montech AIR 100 ARGB ----
 POST {{baseUrl}}/cases/
@@ -1083,7 +1083,7 @@ Content-Type: application/json
 
 
 ### ============================================================
-### ข้อ 1 : CASE — แสดงข้อมูล
+### ข้อ 1 : CASE - แสดงข้อมูล
 ### ============================================================
 ### ---- GET: แสดง CASE ทั้งหมด ----
 GET {{baseUrl}}/cases/
@@ -1153,7 +1153,7 @@ GET {{baseUrl}}/customers/
 
 
 ### ============================================================
-### ข้อ 2 : เลือกชิ้นส่วนตามลำดับ (แสดงเฉพาะชิ้นที่เข้ากันได้)
+### ข้อ 2 : เลือกชิ้นส่วนตามลำดับ (จะโชว์เฉพาะชิ้นที่เข้ากันได้)
 ### ============================================================
 ### ---- GET: เลือก CPU Intel i5-12400F (id 2) -> แสดงเฉพาะ Mainboard LGA1700 (expect id 1-5) ----
 GET {{baseUrl}}/mainboards/?cpu_id=2
@@ -1294,7 +1294,7 @@ Content-Type: application/json
 "case_id": 10
 }
 
-### ---- POST: [ผิด] CPU Intel (id 2) กับ Mainboard AMD AM5 (id 9) socket ไม่ตรง (expect 400) ----
+### ---- POST: CPU Intel (id 2) กับ Mainboard AMD AM5 (id 9) socket ไม่ตรง (expect 400) ----
 POST {{baseUrl}}/pc-sets/
 Content-Type: application/json
 
@@ -1310,7 +1310,7 @@ Content-Type: application/json
 "case_id": 3
 }
 
-### ---- POST: [ผิด] RAM DDR4 (id 2) กับ Mainboard DDR5 (id 3) (expect 400) ----
+### ---- POST: RAM DDR4 (id 2) กับ Mainboard DDR5 (id 3) (expect 400) ----
 POST {{baseUrl}}/pc-sets/
 Content-Type: application/json
 
@@ -1326,7 +1326,7 @@ Content-Type: application/json
 "case_id": 3
 }
 
-### ---- POST: [ผิด] Mainboard ATX (id 4) ใส่เคส Micro-ATX (id 2) (expect 400) ----
+### ---- POST: Mainboard ATX (id 4) ใส่เคส Micro-ATX (id 2) (expect 400) ----
 POST {{baseUrl}}/pc-sets/
 Content-Type: application/json
 
@@ -1342,7 +1342,7 @@ Content-Type: application/json
 "case_id": 2
 }
 
-### ---- POST: [ผิด] การ์ดจอยาว 327 มม. (id 5) ใส่เคสที่รับได้ 300 มม. (id 10) (expect 400) ----
+### ---- POST: การ์ดจอยาว 327 มม. (id 5) ใส่เคสที่รับได้ 300 มม. (id 10) (expect 400) ----
 POST {{baseUrl}}/pc-sets/
 Content-Type: application/json
 
@@ -1358,7 +1358,7 @@ Content-Type: application/json
 "case_id": 10
 }
 
-### ---- POST: [ผิด] PSU 450W (id 1) กับ RTX 5080 (id 6) ไฟไม่พอ (expect 400) ----
+### ---- POST: PSU 450W (id 1) กับ RTX 5080 (id 6) ไฟไม่พอ (expect 400) ----
 POST {{baseUrl}}/pc-sets/
 Content-Type: application/json
 
@@ -1374,7 +1374,7 @@ Content-Type: application/json
 "case_id": 3
 }
 
-### ---- POST: [ผิด] CPU ไม่มีกราฟิกในตัว (id 2) แต่ไม่ใส่การ์ดจอ (expect 400) ----
+### ---- POST: CPU ไม่มีกราฟิกในตัว (id 2) แต่ไม่ใส่การ์ดจอ (expect 400) ----
 POST {{baseUrl}}/pc-sets/
 Content-Type: application/json
 
@@ -1389,7 +1389,7 @@ Content-Type: application/json
 "case_id": 3
 }
 
-### ---- POST: [ผิด] ลูกค้าที่ไม่มีในระบบ (expect 404) ----
+### ---- POST: ลูกค้าที่ไม่มีในระบบ (expect 404) ----
 POST {{baseUrl}}/pc-sets/
 Content-Type: application/json
 
@@ -1405,7 +1405,7 @@ Content-Type: application/json
 "case_id": 3
 }
 
-### ---- POST: [ผิด] CPU ที่ไม่มีในระบบ (expect 404) ----
+### ---- POST: CPU ที่ไม่มีในระบบ (expect 404) ----
 POST {{baseUrl}}/pc-sets/
 Content-Type: application/json
 
@@ -1423,7 +1423,7 @@ Content-Type: application/json
 
 
 ### ============================================================
-### ข้อ 3 : อัพเดท / สับเปลี่ยนอุปกรณ์
+### ข้อ 3 : อัพเดท/สับเปลี่ยนอุปกรณ์
 ### ============================================================
 ### ---- PUT: set 1 อัพเกรดการ์ดจอ RTX 3050 -> RTX 4060 (id 2) ----
 PUT {{baseUrl}}/pc-sets/1
@@ -1625,7 +1625,7 @@ Content-Type: application/json
 
 {
 "customer_id": 5,
-"set_name": "Gaming AM5 ของคุณธนพล"
+"set_name": "Gaming AM5 ของคุณ Emi"
 }
 
 ### ---- POST: คัดลอก set 4 ให้ลูกค้า 5 ----
@@ -1634,7 +1634,7 @@ Content-Type: application/json
 
 {
 "customer_id": 5,
-"set_name": "Budget AM4 ของคุณธนพล"
+"set_name": "Budget AM4 ของคุณ Emi"
 }
 
 ### ---- POST: คัดลอก set 6 ให้ลูกค้า 2 ----
@@ -1643,7 +1643,7 @@ Content-Type: application/json
 
 {
 "customer_id": 2,
-"set_name": "Ultimate ของคุณสมหญิง"
+"set_name": "Ultimate ของคุณ Lorena"
 }
 
 ### ---- POST: คัดลอก set 1 ให้ลูกค้า 4 ----
@@ -1652,7 +1652,7 @@ Content-Type: application/json
 
 {
 "customer_id": 4,
-"set_name": "Office ของคุณปิยะนุช"
+"set_name": "Office ของคุณ Jennie"
 }
 
 ### ---- POST: คัดลอก set 5 ให้ลูกค้า 3 ----
@@ -1661,7 +1661,7 @@ Content-Type: application/json
 
 {
 "customer_id": 3,
-"set_name": "Office ของคุณวิทยา"
+"set_name": "Office ของคุณ Sutatta"
 }
 
 ### ---- POST: คัดลอก set ที่ไม่มีในระบบ (expect 404) ----
