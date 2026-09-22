@@ -1,0 +1,1693 @@
+@baseUrl = http://127.0.0.1:8000
+
+### ---- GET: check if server is running (หน้า docs) ----
+GET {{baseUrl}}/docs
+
+
+### ============================================================
+### ข้อ 1 : CPU - เพิ่มข้อมูล 10 รายการ
+### ============================================================
+### ---- POST: CPU 1 Intel Core i3-12100F ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "Intel",
+"cpu_name": "Core i3-12100F",
+"socket": "LGA1700",
+"cores": 4,
+"threads": 8,
+"base_clock_ghz": 3.3,
+"boost_clock_ghz": 4.3,
+"tdp_w": 58,
+"integrated_graphics": false,
+"price": 2990
+}
+
+### ---- POST: CPU 2 Intel Core i5-12400F ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "Intel",
+"cpu_name": "Core i5-12400F",
+"socket": "LGA1700",
+"cores": 6,
+"threads": 12,
+"base_clock_ghz": 2.5,
+"boost_clock_ghz": 4.4,
+"tdp_w": 65,
+"integrated_graphics": false,
+"price": 4090
+}
+
+### ---- POST: CPU 3 Intel Core i5-13400 ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "Intel",
+"cpu_name": "Core i5-13400",
+"socket": "LGA1700",
+"cores": 10,
+"threads": 16,
+"base_clock_ghz": 2.5,
+"boost_clock_ghz": 4.6,
+"tdp_w": 65,
+"integrated_graphics": true,
+"price": 7290
+}
+
+### ---- POST: CPU 4 Intel Core i5-14600K ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "Intel",
+"cpu_name": "Core i5-14600K",
+"socket": "LGA1700",
+"cores": 14,
+"threads": 20,
+"base_clock_ghz": 3.5,
+"boost_clock_ghz": 5.3,
+"tdp_w": 125,
+"integrated_graphics": true,
+"price": 10900
+}
+
+### ---- POST: CPU 5 Intel Core i7-14700K ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "Intel",
+"cpu_name": "Core i7-14700K",
+"socket": "LGA1700",
+"cores": 20,
+"threads": 28,
+"base_clock_ghz": 3.4,
+"boost_clock_ghz": 5.6,
+"tdp_w": 125,
+"integrated_graphics": true,
+"price": 14900
+}
+
+### ---- POST: CPU 6 Intel Core Ultra 5 245K ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "Intel",
+"cpu_name": "Core Ultra 5 245K",
+"socket": "LGA1851",
+"cores": 14,
+"threads": 14,
+"base_clock_ghz": 4.2,
+"boost_clock_ghz": 5.2,
+"tdp_w": 125,
+"integrated_graphics": true,
+"price": 10500
+}
+
+### ---- POST: CPU 7 AMD Ryzen 5 5600 ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "AMD",
+"cpu_name": "Ryzen 5 5600",
+"socket": "AM4",
+"cores": 6,
+"threads": 12,
+"base_clock_ghz": 3.5,
+"boost_clock_ghz": 4.4,
+"tdp_w": 65,
+"integrated_graphics": false,
+"price": 3690
+}
+
+### ---- POST: CPU 8 AMD Ryzen 5 7600 ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "AMD",
+"cpu_name": "Ryzen 5 7600",
+"socket": "AM5",
+"cores": 6,
+"threads": 12,
+"base_clock_ghz": 3.8,
+"boost_clock_ghz": 5.1,
+"tdp_w": 65,
+"integrated_graphics": true,
+"price": 6990
+}
+
+### ---- POST: CPU 9 AMD Ryzen 7 7800X3D ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "AMD",
+"cpu_name": "Ryzen 7 7800X3D",
+"socket": "AM5",
+"cores": 8,
+"threads": 16,
+"base_clock_ghz": 4.2,
+"boost_clock_ghz": 5.0,
+"tdp_w": 120,
+"integrated_graphics": true,
+"price": 14900
+}
+
+### ---- POST: CPU 10 AMD Ryzen 7 9700X ----
+POST {{baseUrl}}/cpus/
+Content-Type: application/json
+
+{
+"brand": "AMD",
+"cpu_name": "Ryzen 7 9700X",
+"socket": "AM5",
+"cores": 8,
+"threads": 16,
+"base_clock_ghz": 3.8,
+"boost_clock_ghz": 5.5,
+"tdp_w": 65,
+"integrated_graphics": true,
+"price": 11900
+}
+
+
+### ============================================================
+### ข้อ 1 : CPU - แสดงข้อมูล
+### ============================================================
+### ---- GET: แสดง CPU ทั้งหมด ----
+GET {{baseUrl}}/cpus/
+
+### ---- GET: แสดง CPU id 1 ----
+GET {{baseUrl}}/cpus/1
+
+
+### ============================================================
+### ข้อ 1 : MAINBOARD - เพิ่มข้อมูล 10 รายการ
+### ============================================================
+### ---- POST: MAINBOARD 1 ASUS PRIME H610M-E D4 ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "ASUS",
+"mainboard_name": "PRIME H610M-E D4",
+"socket": "LGA1700",
+"chipset": "H610",
+"form_factor": "Micro-ATX",
+"memory_type": "DDR4",
+"memory_slots": 2,
+"m2_slots": 1,
+"price": 2390
+}
+
+### ---- POST: MAINBOARD 2 MSI PRO B760M-E DDR4 ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "MSI",
+"mainboard_name": "PRO B760M-E DDR4",
+"socket": "LGA1700",
+"chipset": "B760",
+"form_factor": "Micro-ATX",
+"memory_type": "DDR4",
+"memory_slots": 2,
+"m2_slots": 1,
+"price": 3190
+}
+
+### ---- POST: MAINBOARD 3 GIGABYTE B760M GAMING X AX DDR5 ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "GIGABYTE",
+"mainboard_name": "B760M GAMING X AX DDR5",
+"socket": "LGA1700",
+"chipset": "B760",
+"form_factor": "Micro-ATX",
+"memory_type": "DDR5",
+"memory_slots": 4,
+"m2_slots": 2,
+"price": 5290
+}
+
+### ---- POST: MAINBOARD 4 ASUS TUF GAMING Z790-PLUS WIFI ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "ASUS",
+"mainboard_name": "TUF GAMING Z790-PLUS WIFI",
+"socket": "LGA1700",
+"chipset": "Z790",
+"form_factor": "ATX",
+"memory_type": "DDR5",
+"memory_slots": 4,
+"m2_slots": 4,
+"price": 9990
+}
+
+### ---- POST: MAINBOARD 5 ASUS ROG STRIX B760-I GAMING WIFI ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "ASUS",
+"mainboard_name": "ROG STRIX B760-I GAMING WIFI",
+"socket": "LGA1700",
+"chipset": "B760",
+"form_factor": "Mini-ITX",
+"memory_type": "DDR5",
+"memory_slots": 2,
+"m2_slots": 2,
+"price": 7490
+}
+
+### ---- POST: MAINBOARD 6 MSI PRO Z890-P WIFI ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "MSI",
+"mainboard_name": "PRO Z890-P WIFI",
+"socket": "LGA1851",
+"chipset": "Z890",
+"form_factor": "ATX",
+"memory_type": "DDR5",
+"memory_slots": 4,
+"m2_slots": 4,
+"price": 9490
+}
+
+### ---- POST: MAINBOARD 7 MSI B550M PRO-VDH WIFI ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "MSI",
+"mainboard_name": "B550M PRO-VDH WIFI",
+"socket": "AM4",
+"chipset": "B550",
+"form_factor": "Micro-ATX",
+"memory_type": "DDR4",
+"memory_slots": 4,
+"m2_slots": 2,
+"price": 3590
+}
+
+### ---- POST: MAINBOARD 8 ASRock A520M-HDV ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "ASRock",
+"mainboard_name": "A520M-HDV",
+"socket": "AM4",
+"chipset": "A520",
+"form_factor": "Micro-ATX",
+"memory_type": "DDR4",
+"memory_slots": 2,
+"m2_slots": 1,
+"price": 1990
+}
+
+### ---- POST: MAINBOARD 9 GIGABYTE B650M GAMING X AX ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "GIGABYTE",
+"mainboard_name": "B650M GAMING X AX",
+"socket": "AM5",
+"chipset": "B650",
+"form_factor": "Micro-ATX",
+"memory_type": "DDR5",
+"memory_slots": 4,
+"m2_slots": 2,
+"price": 5990
+}
+
+### ---- POST: MAINBOARD 10 ASUS ROG STRIX X870E-E GAMING WIFI ----
+POST {{baseUrl}}/mainboards/
+Content-Type: application/json
+
+{
+"brand": "ASUS",
+"mainboard_name": "ROG STRIX X870E-E GAMING WIFI",
+"socket": "AM5",
+"chipset": "X870E",
+"form_factor": "ATX",
+"memory_type": "DDR5",
+"memory_slots": 4,
+"m2_slots": 5,
+"price": 18900
+}
+
+
+### ============================================================
+### ข้อ 1 : MAINBOARD - แสดงข้อมูล
+### ============================================================
+### ---- GET: แสดง MAINBOARD ทั้งหมด ----
+GET {{baseUrl}}/mainboards/
+
+### ---- GET: แสดง MAINBOARD ตัวแรกของกลุ่มนี้ ----
+GET {{baseUrl}}/mainboards/1
+
+
+### ============================================================
+### ข้อ 1 : RAM - เพิ่มข้อมูล 10 รายการ
+### ============================================================
+### ---- POST: RAM 1 Kingston FURY Beast 8GB (8GBx1) DDR4 3200 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "Kingston",
+"ram_name": "FURY Beast 8GB (8GBx1) DDR4 3200",
+"memory_type": "DDR4",
+"capacity_gb": 8,
+"modules": 1,
+"speed_mhz": 3200,
+"price": 890
+}
+
+### ---- POST: RAM 2 Kingston FURY Beast 16GB (8GBx2) DDR4 3200 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "Kingston",
+"ram_name": "FURY Beast 16GB (8GBx2) DDR4 3200",
+"memory_type": "DDR4",
+"capacity_gb": 16,
+"modules": 2,
+"speed_mhz": 3200,
+"price": 1590
+}
+
+### ---- POST: RAM 3 Corsair Vengeance LPX 16GB (16GBx1) DDR4 3200 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "Corsair",
+"ram_name": "Vengeance LPX 16GB (16GBx1) DDR4 3200",
+"memory_type": "DDR4",
+"capacity_gb": 16,
+"modules": 1,
+"speed_mhz": 3200,
+"price": 1390
+}
+
+### ---- POST: RAM 4 G.Skill Ripjaws V 32GB (16GBx2) DDR4 3600 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "G.Skill",
+"ram_name": "Ripjaws V 32GB (16GBx2) DDR4 3600",
+"memory_type": "DDR4",
+"capacity_gb": 32,
+"modules": 2,
+"speed_mhz": 3600,
+"price": 2890
+}
+
+### ---- POST: RAM 5 TEAMGROUP T-Force Delta RGB 32GB (16GBx2) DDR4 3600 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "TEAMGROUP",
+"ram_name": "T-Force Delta RGB 32GB (16GBx2) DDR4 3600",
+"memory_type": "DDR4",
+"capacity_gb": 32,
+"modules": 2,
+"speed_mhz": 3600,
+"price": 3190
+}
+
+### ---- POST: RAM 6 Kingston FURY Beast 16GB (16GBx1) DDR5 5600 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "Kingston",
+"ram_name": "FURY Beast 16GB (16GBx1) DDR5 5600",
+"memory_type": "DDR5",
+"capacity_gb": 16,
+"modules": 1,
+"speed_mhz": 5600,
+"price": 1890
+}
+
+### ---- POST: RAM 7 Corsair Vengeance 32GB (16GBx2) DDR5 6000 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "Corsair",
+"ram_name": "Vengeance 32GB (16GBx2) DDR5 6000",
+"memory_type": "DDR5",
+"capacity_gb": 32,
+"modules": 2,
+"speed_mhz": 6000,
+"price": 3990
+}
+
+### ---- POST: RAM 8 G.Skill Trident Z5 RGB 32GB (16GBx2) DDR5 6400 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "G.Skill",
+"ram_name": "Trident Z5 RGB 32GB (16GBx2) DDR5 6400",
+"memory_type": "DDR5",
+"capacity_gb": 32,
+"modules": 2,
+"speed_mhz": 6400,
+"price": 4890
+}
+
+### ---- POST: RAM 9 Kingston FURY Renegade 64GB (32GBx2) DDR5 6000 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "Kingston",
+"ram_name": "FURY Renegade 64GB (32GBx2) DDR5 6000",
+"memory_type": "DDR5",
+"capacity_gb": 64,
+"modules": 2,
+"speed_mhz": 6000,
+"price": 8490
+}
+
+### ---- POST: RAM 10 TEAMGROUP T-Create Expert 96GB (48GBx2) DDR5 6000 ----
+POST {{baseUrl}}/rams/
+Content-Type: application/json
+
+{
+"brand": "TEAMGROUP",
+"ram_name": "T-Create Expert 96GB (48GBx2) DDR5 6000",
+"memory_type": "DDR5",
+"capacity_gb": 96,
+"modules": 2,
+"speed_mhz": 6000,
+"price": 11900
+}
+
+
+### ============================================================
+### ข้อ 1 : RAM - แสดงข้อมูล
+### ============================================================
+### ---- GET: แสดง RAM ทั้งหมด ----
+GET {{baseUrl}}/rams/
+
+### ---- GET: แสดง RAM ตัวแรกของกลุ่มนี้ ----
+GET {{baseUrl}}/rams/1
+
+
+### ============================================================
+### ข้อ 1 : GPU - เพิ่มข้อมูล 10 รายการ
+### ============================================================
+### ---- POST: GPU 1 ASUS DUAL GeForce RTX 3050 OC 6GB ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "ASUS",
+"gpu_name": "DUAL GeForce RTX 3050 OC 6GB",
+"chipset": "GeForce RTX 3050",
+"vram_gb": 6,
+"tdp_w": 70,
+"length_mm": 200,
+"price": 5990
+}
+
+### ---- POST: GPU 2 MSI GeForce RTX 4060 VENTUS 2X BLACK 8G OC ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "MSI",
+"gpu_name": "GeForce RTX 4060 VENTUS 2X BLACK 8G OC",
+"chipset": "GeForce RTX 4060",
+"vram_gb": 8,
+"tdp_w": 115,
+"length_mm": 199,
+"price": 10490
+}
+
+### ---- POST: GPU 3 GIGABYTE GeForce RTX 4060 Ti WINDFORCE OC 8G ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "GIGABYTE",
+"gpu_name": "GeForce RTX 4060 Ti WINDFORCE OC 8G",
+"chipset": "GeForce RTX 4060 Ti",
+"vram_gb": 8,
+"tdp_w": 160,
+"length_mm": 282,
+"price": 13990
+}
+
+### ---- POST: GPU 4 ZOTAC GAMING GeForce RTX 5070 Twin Edge 12GB ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "ZOTAC",
+"gpu_name": "GAMING GeForce RTX 5070 Twin Edge 12GB",
+"chipset": "GeForce RTX 5070",
+"vram_gb": 12,
+"tdp_w": 250,
+"length_mm": 229,
+"price": 21900
+}
+
+### ---- POST: GPU 5 ASUS TUF Gaming GeForce RTX 5070 Ti 16GB ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "ASUS",
+"gpu_name": "TUF Gaming GeForce RTX 5070 Ti 16GB",
+"chipset": "GeForce RTX 5070 Ti",
+"vram_gb": 16,
+"tdp_w": 300,
+"length_mm": 327,
+"price": 32900
+}
+
+### ---- POST: GPU 6 MSI GeForce RTX 5080 16G GAMING TRIO OC ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "MSI",
+"gpu_name": "GeForce RTX 5080 16G GAMING TRIO OC",
+"chipset": "GeForce RTX 5080",
+"vram_gb": 16,
+"tdp_w": 360,
+"length_mm": 338,
+"price": 44900
+}
+
+### ---- POST: GPU 7 ASUS ROG Astral GeForce RTX 5090 32GB ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "ASUS",
+"gpu_name": "ROG Astral GeForce RTX 5090 32GB",
+"chipset": "GeForce RTX 5090",
+"vram_gb": 32,
+"tdp_w": 575,
+"length_mm": 357,
+"price": 109900
+}
+
+### ---- POST: GPU 8 SAPPHIRE PULSE Radeon RX 7600 8GB ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "SAPPHIRE",
+"gpu_name": "PULSE Radeon RX 7600 8GB",
+"chipset": "Radeon RX 7600",
+"vram_gb": 8,
+"tdp_w": 165,
+"length_mm": 240,
+"price": 8990
+}
+
+### ---- POST: GPU 9 PowerColor Hellhound Radeon RX 9070 XT 16GB ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "PowerColor",
+"gpu_name": "Hellhound Radeon RX 9070 XT 16GB",
+"chipset": "Radeon RX 9070 XT",
+"vram_gb": 16,
+"tdp_w": 304,
+"length_mm": 332,
+"price": 25900
+}
+
+### ---- POST: GPU 10 GIGABYTE Radeon RX 7900 XTX GAMING OC 24G ----
+POST {{baseUrl}}/gpus/
+Content-Type: application/json
+
+{
+"brand": "GIGABYTE",
+"gpu_name": "Radeon RX 7900 XTX GAMING OC 24G",
+"chipset": "Radeon RX 7900 XTX",
+"vram_gb": 24,
+"tdp_w": 355,
+"length_mm": 331,
+"price": 36900
+}
+
+
+### ============================================================
+### ข้อ 1 : GPU - แสดงข้อมูล
+### ============================================================
+### ---- GET: แสดง GPU ทั้งหมด ----
+GET {{baseUrl}}/gpus/
+
+### ---- GET: แสดง GPU ตัวแรกของกลุ่มนี้ ----
+GET {{baseUrl}}/gpus/1
+
+
+### ============================================================
+### ข้อ 1 : STORAGE - เพิ่มข้อมูล 10 รายการ
+### ============================================================
+### ---- POST: STORAGE 1 WD Blue SN580 500GB ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "WD",
+"storage_name": "Blue SN580 500GB",
+"storage_type": "SSD",
+"interface": "M.2 NVMe",
+"capacity_gb": 500,
+"read_speed_mbps": 4000,
+"price": 1290
+}
+
+### ---- POST: STORAGE 2 Kingston NV3 1TB ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "Kingston",
+"storage_name": "NV3 1TB",
+"storage_type": "SSD",
+"interface": "M.2 NVMe",
+"capacity_gb": 1000,
+"read_speed_mbps": 6000,
+"price": 1990
+}
+
+### ---- POST: STORAGE 3 Samsung 990 EVO Plus 1TB ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "Samsung",
+"storage_name": "990 EVO Plus 1TB",
+"storage_type": "SSD",
+"interface": "M.2 NVMe",
+"capacity_gb": 1000,
+"read_speed_mbps": 7250,
+"price": 3290
+}
+
+### ---- POST: STORAGE 4 WD Black SN850X 2TB ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "WD",
+"storage_name": "Black SN850X 2TB",
+"storage_type": "SSD",
+"interface": "M.2 NVMe",
+"capacity_gb": 2000,
+"read_speed_mbps": 7300,
+"price": 5990
+}
+
+### ---- POST: STORAGE 5 Crucial P3 Plus 2TB ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "Crucial",
+"storage_name": "P3 Plus 2TB",
+"storage_type": "SSD",
+"interface": "M.2 NVMe",
+"capacity_gb": 2000,
+"read_speed_mbps": 5000,
+"price": 4290
+}
+
+### ---- POST: STORAGE 6 Samsung 870 EVO 500GB ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "Samsung",
+"storage_name": "870 EVO 500GB",
+"storage_type": "SSD",
+"interface": "SATA",
+"capacity_gb": 500,
+"read_speed_mbps": 560,
+"price": 1890
+}
+
+### ---- POST: STORAGE 7 Crucial MX500 1TB ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "Crucial",
+"storage_name": "MX500 1TB",
+"storage_type": "SSD",
+"interface": "SATA",
+"capacity_gb": 1000,
+"read_speed_mbps": 560,
+"price": 2390
+}
+
+### ---- POST: STORAGE 8 Kingston A400 480GB ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "Kingston",
+"storage_name": "A400 480GB",
+"storage_type": "SSD",
+"interface": "SATA",
+"capacity_gb": 480,
+"read_speed_mbps": 500,
+"price": 990
+}
+
+### ---- POST: STORAGE 9 Seagate BarraCuda 2TB 7200RPM ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "Seagate",
+"storage_name": "BarraCuda 2TB 7200RPM",
+"storage_type": "HDD",
+"interface": "SATA",
+"capacity_gb": 2000,
+"read_speed_mbps": 190,
+"price": 1890
+}
+
+### ---- POST: STORAGE 10 WD Blue 1TB 7200RPM ----
+POST {{baseUrl}}/storages/
+Content-Type: application/json
+
+{
+"brand": "WD",
+"storage_name": "Blue 1TB 7200RPM",
+"storage_type": "HDD",
+"interface": "SATA",
+"capacity_gb": 1000,
+"read_speed_mbps": 150,
+"price": 1390
+}
+
+
+### ============================================================
+### ข้อ 1 : STORAGE - แสดงข้อมูล
+### ============================================================
+### ---- GET: แสดง STORAGE ทั้งหมด ----
+GET {{baseUrl}}/storages/
+
+### ---- GET: แสดง STORAGE ตัวแรกของกลุ่มนี้ ----
+GET {{baseUrl}}/storages/1
+
+
+### ============================================================
+### ข้อ 1 : PSU - เพิ่มข้อมูล 10 รายการ
+### ============================================================
+### ---- POST: PSU 1 Thermaltake Litepower 450W ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "Thermaltake",
+"psu_name": "Litepower 450W",
+"wattage_w": 450,
+"efficiency": "80 Plus Standard",
+"price": 890
+}
+
+### ---- POST: PSU 2 Cooler Master MWE 550 Bronze V2 ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "Cooler Master",
+"psu_name": "MWE 550 Bronze V2",
+"wattage_w": 550,
+"efficiency": "80 Plus Bronze",
+"price": 1790
+}
+
+### ---- POST: PSU 3 Corsair CX650 ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "Corsair",
+"psu_name": "CX650",
+"wattage_w": 650,
+"efficiency": "80 Plus Bronze",
+"price": 2290
+}
+
+### ---- POST: PSU 4 MSI MAG A650BN ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "MSI",
+"psu_name": "MAG A650BN",
+"wattage_w": 650,
+"efficiency": "80 Plus Bronze",
+"price": 1990
+}
+
+### ---- POST: PSU 5 Corsair RM750e ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "Corsair",
+"psu_name": "RM750e",
+"wattage_w": 750,
+"efficiency": "80 Plus Gold",
+"price": 3590
+}
+
+### ---- POST: PSU 6 Cooler Master MWE Gold 850 V2 ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "Cooler Master",
+"psu_name": "MWE Gold 850 V2",
+"wattage_w": 850,
+"efficiency": "80 Plus Gold",
+"price": 3990
+}
+
+### ---- POST: PSU 7 Seasonic FOCUS GX-850 ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "Seasonic",
+"psu_name": "FOCUS GX-850",
+"wattage_w": 850,
+"efficiency": "80 Plus Gold",
+"price": 4590
+}
+
+### ---- POST: PSU 8 Corsair RM1000x ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "Corsair",
+"psu_name": "RM1000x",
+"wattage_w": 1000,
+"efficiency": "80 Plus Gold",
+"price": 6290
+}
+
+### ---- POST: PSU 9 ASUS ROG THOR 1200P2 ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "ASUS",
+"psu_name": "ROG THOR 1200P2",
+"wattage_w": 1200,
+"efficiency": "80 Plus Platinum",
+"price": 13900
+}
+
+### ---- POST: PSU 10 Thermaltake Toughpower GF3 1000W ----
+POST {{baseUrl}}/psus/
+Content-Type: application/json
+
+{
+"brand": "Thermaltake",
+"psu_name": "Toughpower GF3 1000W",
+"wattage_w": 1000,
+"efficiency": "80 Plus Gold",
+"price": 5990
+}
+
+
+### ============================================================
+### ข้อ 1 : PSU - แสดงข้อมูล
+### ============================================================
+### ---- GET: แสดง PSU ทั้งหมด ----
+GET {{baseUrl}}/psus/
+
+### ---- GET: แสดง PSU ตัวแรกของกลุ่มนี้ ----
+GET {{baseUrl}}/psus/1
+
+
+### ============================================================
+### ข้อ 1 : CASE - เพิ่มข้อมูล 10 รายการ
+### ============================================================
+### ---- POST: CASE 1 Montech AIR 100 ARGB ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "Montech",
+"case_name": "AIR 100 ARGB",
+"supported_form_factors": "Micro-ATX,Mini-ITX",
+"max_gpu_length_mm": 330,
+"price": 1590
+}
+
+### ---- POST: CASE 2 Cooler Master MasterBox Q300L ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "Cooler Master",
+"case_name": "MasterBox Q300L",
+"supported_form_factors": "Micro-ATX,Mini-ITX",
+"max_gpu_length_mm": 360,
+"price": 1490
+}
+
+### ---- POST: CASE 3 NZXT H5 Flow ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "NZXT",
+"case_name": "H5 Flow",
+"supported_form_factors": "ATX,Micro-ATX,Mini-ITX",
+"max_gpu_length_mm": 365,
+"price": 3190
+}
+
+### ---- POST: CASE 4 Lian Li LANCOOL 216 ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "Lian Li",
+"case_name": "LANCOOL 216",
+"supported_form_factors": "E-ATX,ATX,Micro-ATX,Mini-ITX",
+"max_gpu_length_mm": 392,
+"price": 3690
+}
+
+### ---- POST: CASE 5 Corsair 4000D Airflow ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "Corsair",
+"case_name": "4000D Airflow",
+"supported_form_factors": "ATX,Micro-ATX,Mini-ITX",
+"max_gpu_length_mm": 360,
+"price": 3290
+}
+
+### ---- POST: CASE 6 Fractal Design North ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "Fractal Design",
+"case_name": "North",
+"supported_form_factors": "ATX,Micro-ATX,Mini-ITX",
+"max_gpu_length_mm": 355,
+"price": 4990
+}
+
+### ---- POST: CASE 7 Cooler Master MasterBox NR200P ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "Cooler Master",
+"case_name": "MasterBox NR200P",
+"supported_form_factors": "Mini-ITX",
+"max_gpu_length_mm": 330,
+"price": 3490
+}
+
+### ---- POST: CASE 8 Lian Li O11 Dynamic EVO ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "Lian Li",
+"case_name": "O11 Dynamic EVO",
+"supported_form_factors": "E-ATX,ATX,Micro-ATX,Mini-ITX",
+"max_gpu_length_mm": 426,
+"price": 5990
+}
+
+### ---- POST: CASE 9 Montech SKY TWO ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "Montech",
+"case_name": "SKY TWO",
+"supported_form_factors": "ATX,Micro-ATX,Mini-ITX",
+"max_gpu_length_mm": 400,
+"price": 2990
+}
+
+### ---- POST: CASE 10 Antec NX200M ----
+POST {{baseUrl}}/cases/
+Content-Type: application/json
+
+{
+"brand": "Antec",
+"case_name": "NX200M",
+"supported_form_factors": "Micro-ATX,Mini-ITX",
+"max_gpu_length_mm": 300,
+"price": 1190
+}
+
+
+### ============================================================
+### ข้อ 1 : CASE - แสดงข้อมูล
+### ============================================================
+### ---- GET: แสดง CASE ทั้งหมด ----
+GET {{baseUrl}}/cases/
+
+### ---- GET: แสดง CASE ตัวแรกของกลุ่มนี้ ----
+GET {{baseUrl}}/cases/1
+
+### ---- GET: CPU ที่ไม่มีในระบบ (expect 404) ----
+GET {{baseUrl}}/cpus/999
+
+
+### ============================================================
+### ข้อ 2 : ลูกค้า
+### ============================================================
+### ---- POST: เพิ่มลูกค้า 1 ----
+POST {{baseUrl}}/customers/
+Content-Type: application/json
+
+{
+"name": "Natsha Taechamongkalapiwat",
+"phone": "081-111-1111",
+"email": "natshatae@mail.com"
+}
+
+### ---- POST: เพิ่มลูกค้า 2 ----
+POST {{baseUrl}}/customers/
+Content-Type: application/json
+
+{
+"name": "Lorena Schuett",
+"phone": "082-222-2222",
+"email": "lorena@mail.com"
+}
+
+### ---- POST: เพิ่มลูกค้า 3 ----
+POST {{baseUrl}}/customers/
+Content-Type: application/json
+
+{
+"name": "Sutatta Udomsilp",
+"phone": "083-333-3333",
+"email": "sutatta@mail.com"
+}
+
+### ---- POST: เพิ่มลูกค้า 4 ----
+POST {{baseUrl}}/customers/
+Content-Type: application/json
+
+{
+"name": "Jennie Kim",
+"phone": "084-444-4444",
+"email": "jennie@mail.com"
+}
+
+### ---- POST: เพิ่มลูกค้า 5 ----
+POST {{baseUrl}}/customers/
+Content-Type: application/json
+
+{
+"name": "Emi Liu",
+"phone": "085-555-5555",
+"email": "emiliu@mail.com"
+}
+
+### ---- GET: แสดงลูกค้าทั้งหมด ----
+GET {{baseUrl}}/customers/
+
+
+### ============================================================
+### ข้อ 2 : เลือกชิ้นส่วนตามลำดับ (จะโชว์เฉพาะชิ้นที่เข้ากันได้)
+### ============================================================
+### ---- GET: เลือก CPU Intel i5-12400F (id 2) -> แสดงเฉพาะ Mainboard LGA1700 (expect id 1-5) ----
+GET {{baseUrl}}/mainboards/?cpu_id=2
+
+### ---- GET: เลือก CPU AMD Ryzen 5 7600 (id 8) -> แสดงเฉพาะ Mainboard AM5 (expect id 9, 10) ----
+GET {{baseUrl}}/mainboards/?cpu_id=8
+
+### ---- GET: เลือก Mainboard DDR5 (id 3) -> แสดงเฉพาะ RAM DDR5 (expect id 6-10) ----
+GET {{baseUrl}}/rams/?mainboard_id=3
+
+### ---- GET: เลือก Mainboard ATX (id 4) -> แสดงเฉพาะเคสที่ใส่บอร์ด ATX ได้ ----
+GET {{baseUrl}}/cases/?mainboard_id=4
+
+### ---- GET: เลือก Mainboard ATX (id 4) + การ์ดจอ RTX 5090 ยาว 357 มม. (id 7) -> เคสที่ใส่ได้ทั้งคู่ (expect id 3, 4, 5, 8, 9) ----
+GET {{baseUrl}}/cases/?mainboard_id=4&gpu_id=7
+
+### ---- GET: เลือก CPU i7-14700K (id 5) + RTX 5080 (id 6) -> แสดงเฉพาะ PSU ที่ไฟพอ (ต้องใช้ 585W ขึ้นไป) ----
+GET {{baseUrl}}/psus/?cpu_id=5&gpu_id=6
+
+### ---- GET: เลือก CPU i5-13400 (id 3) ไม่ใส่การ์ดจอ -> PSU ที่ไฟพอ (ต้องใช้ 165W ขึ้นไป) ----
+GET {{baseUrl}}/psus/?cpu_id=3
+
+### ---- GET: เลือก CPU ที่ไม่มีในระบบ (expect 404) ----
+GET {{baseUrl}}/mainboards/?cpu_id=999
+
+
+### ============================================================
+### ข้อ 2 : สร้างคอมพิวเตอร์ set
+### ============================================================
+### ---- POST: สร้าง set 1 คอมทำงาน Intel i3 + RTX 3050 (ลูกค้า 1) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 1,
+"set_name": "Office & Light Gaming i3",
+"cpu_id": 1,
+"mainboard_id": 1,
+"ram_id": 2,
+"gpu_id": 1,
+"storage_id": 2,
+"psu_id": 2,
+"case_id": 2
+}
+
+### ---- POST: สร้าง set 2 เกมมิ่ง Ryzen 5 7600 + RTX 5070 (ลูกค้า 2) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 2,
+"set_name": "Gaming AM5 RTX 5070",
+"cpu_id": 8,
+"mainboard_id": 9,
+"ram_id": 7,
+"gpu_id": 4,
+"storage_id": 3,
+"psu_id": 5,
+"case_id": 3
+}
+
+### ---- POST: สร้าง set 3 สายตัดต่อ i7-14700K + RTX 5080 (ลูกค้า 3) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 3,
+"set_name": "Creator i7 RTX 5080",
+"cpu_id": 5,
+"mainboard_id": 4,
+"ram_id": 9,
+"gpu_id": 6,
+"storage_id": 4,
+"psu_id": 7,
+"case_id": 4
+}
+
+### ---- POST: สร้าง set 4 งบประหยัด Ryzen 5 5600 + RX 7600 (ลูกค้า 4) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 4,
+"set_name": "Budget AM4 RX 7600",
+"cpu_id": 7,
+"mainboard_id": 7,
+"ram_id": 4,
+"gpu_id": 8,
+"storage_id": 7,
+"psu_id": 4,
+"case_id": 1
+}
+
+### ---- POST: สร้าง set 5 คอมออฟฟิศ i5-13400 + RTX 4060 (ลูกค้า 1) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 1,
+"set_name": "Office i5-13400 RTX 4060",
+"cpu_id": 3,
+"mainboard_id": 2,
+"ram_id": 3,
+"gpu_id": 2,
+"storage_id": 1,
+"psu_id": 1,
+"case_id": 10
+}
+
+### ---- POST: สร้าง set 6 ตัวท็อป Ryzen 7 7800X3D + RTX 5090 (ลูกค้า 3) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 3,
+"set_name": "Ultimate 7800X3D RTX 5090",
+"cpu_id": 9,
+"mainboard_id": 10,
+"ram_id": 8,
+"gpu_id": 7,
+"storage_id": 4,
+"psu_id": 9,
+"case_id": 8
+}
+
+### ---- POST: สร้าง set 7 คอมเรียนออนไลน์ ไม่ใส่การ์ดจอ ใช้กราฟิกในตัว i5-13400 (ลูกค้า 4) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 4,
+"set_name": "Study PC i5-13400 (iGPU)",
+"cpu_id": 3,
+"mainboard_id": 2,
+"ram_id": 3,
+"storage_id": 8,
+"psu_id": 1,
+"case_id": 10
+}
+
+### ---- POST: CPU Intel (id 2) กับ Mainboard AMD AM5 (id 9) socket ไม่ตรง (expect 400) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 5,
+"set_name": "Test Set",
+"cpu_id": 2,
+"mainboard_id": 9,
+"ram_id": 7,
+"gpu_id": 2,
+"storage_id": 2,
+"psu_id": 4,
+"case_id": 3
+}
+
+### ---- POST: RAM DDR4 (id 2) กับ Mainboard DDR5 (id 3) (expect 400) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 5,
+"set_name": "Test Set",
+"cpu_id": 2,
+"mainboard_id": 3,
+"ram_id": 2,
+"gpu_id": 2,
+"storage_id": 2,
+"psu_id": 4,
+"case_id": 3
+}
+
+### ---- POST: Mainboard ATX (id 4) ใส่เคส Micro-ATX (id 2) (expect 400) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 5,
+"set_name": "Test Set",
+"cpu_id": 2,
+"mainboard_id": 4,
+"ram_id": 7,
+"gpu_id": 2,
+"storage_id": 2,
+"psu_id": 4,
+"case_id": 2
+}
+
+### ---- POST: การ์ดจอยาว 327 มม. (id 5) ใส่เคสที่รับได้ 300 มม. (id 10) (expect 400) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 5,
+"set_name": "Test Set",
+"cpu_id": 2,
+"mainboard_id": 3,
+"ram_id": 7,
+"gpu_id": 5,
+"storage_id": 2,
+"psu_id": 4,
+"case_id": 10
+}
+
+### ---- POST: PSU 450W (id 1) กับ RTX 5080 (id 6) ไฟไม่พอ (expect 400) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 5,
+"set_name": "Test Set",
+"cpu_id": 2,
+"mainboard_id": 3,
+"ram_id": 7,
+"gpu_id": 6,
+"storage_id": 2,
+"psu_id": 1,
+"case_id": 3
+}
+
+### ---- POST: CPU ไม่มีกราฟิกในตัว (id 2) แต่ไม่ใส่การ์ดจอ (expect 400) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 5,
+"set_name": "Test Set",
+"cpu_id": 2,
+"mainboard_id": 3,
+"ram_id": 7,
+"storage_id": 2,
+"psu_id": 4,
+"case_id": 3
+}
+
+### ---- POST: ลูกค้าที่ไม่มีในระบบ (expect 404) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 999,
+"set_name": "Test Set",
+"cpu_id": 2,
+"mainboard_id": 3,
+"ram_id": 7,
+"gpu_id": 2,
+"storage_id": 2,
+"psu_id": 4,
+"case_id": 3
+}
+
+### ---- POST: CPU ที่ไม่มีในระบบ (expect 404) ----
+POST {{baseUrl}}/pc-sets/
+Content-Type: application/json
+
+{
+"customer_id": 5,
+"set_name": "Test Set",
+"cpu_id": 999,
+"mainboard_id": 3,
+"ram_id": 7,
+"gpu_id": 2,
+"storage_id": 2,
+"psu_id": 4,
+"case_id": 3
+}
+
+
+### ============================================================
+### ข้อ 3 : อัพเดท/สับเปลี่ยนอุปกรณ์
+### ============================================================
+### ---- PUT: set 1 อัพเกรดการ์ดจอ RTX 3050 -> RTX 4060 (id 2) ----
+PUT {{baseUrl}}/pc-sets/1
+Content-Type: application/json
+
+{
+"customer_id": 1,
+"set_name": "Office & Light Gaming i3",
+"cpu_id": 1,
+"mainboard_id": 1,
+"ram_id": 2,
+"gpu_id": 2,
+"storage_id": 2,
+"psu_id": 2,
+"case_id": 2
+}
+
+### ---- PUT: set 1 เปลี่ยนเป็น RTX 5090 (id 7) แต่ PSU 550W เดิมไฟไม่พอ (expect 400) ----
+PUT {{baseUrl}}/pc-sets/1
+Content-Type: application/json
+
+{
+"customer_id": 1,
+"set_name": "Office & Light Gaming i3",
+"cpu_id": 1,
+"mainboard_id": 1,
+"ram_id": 2,
+"gpu_id": 7,
+"storage_id": 2,
+"psu_id": 2,
+"case_id": 2
+}
+
+### ---- PUT: set 1 เปลี่ยนเป็น RTX 5080 (id 6) พร้อมเปลี่ยน PSU เป็น 850W (id 7) ----
+PUT {{baseUrl}}/pc-sets/1
+Content-Type: application/json
+
+{
+"customer_id": 1,
+"set_name": "Office & Light Gaming i3",
+"cpu_id": 1,
+"mainboard_id": 1,
+"ram_id": 2,
+"gpu_id": 6,
+"storage_id": 2,
+"psu_id": 7,
+"case_id": 2
+}
+
+### ---- PUT: set 2 อัพเกรด CPU เป็น Ryzen 7 9700X (id 10) และเปลี่ยนชื่อ set ----
+PUT {{baseUrl}}/pc-sets/2
+Content-Type: application/json
+
+{
+"customer_id": 2,
+"set_name": "Gaming AM5 Ryzen 7 RTX 5070",
+"cpu_id": 10,
+"mainboard_id": 9,
+"ram_id": 7,
+"gpu_id": 4,
+"storage_id": 3,
+"psu_id": 5,
+"case_id": 3
+}
+
+### ---- PUT: set 2 เปลี่ยน CPU เป็น Intel (id 5) บน Mainboard AM5 (expect 400) ----
+PUT {{baseUrl}}/pc-sets/2
+Content-Type: application/json
+
+{
+"customer_id": 2,
+"set_name": "Gaming AM5 Ryzen 7 RTX 5070",
+"cpu_id": 5,
+"mainboard_id": 9,
+"ram_id": 7,
+"gpu_id": 4,
+"storage_id": 3,
+"psu_id": 5,
+"case_id": 3
+}
+
+### ---- PUT: set 2 ถอดการ์ดจอออก (gpu_id = null) ใช้กราฟิกในตัว Ryzen 7 9700X แทน ----
+PUT {{baseUrl}}/pc-sets/2
+Content-Type: application/json
+
+{
+"customer_id": 2,
+"set_name": "Gaming AM5 Ryzen 7 RTX 5070",
+"cpu_id": 10,
+"mainboard_id": 9,
+"ram_id": 7,
+"gpu_id": null,
+"storage_id": 3,
+"psu_id": 5,
+"case_id": 3
+}
+
+### ---- PUT: set 3 เปลี่ยนทั้ง CPU + Mainboard เป็น Intel Core Ultra (CPU id 6 + Mainboard id 6) ----
+PUT {{baseUrl}}/pc-sets/3
+Content-Type: application/json
+
+{
+"customer_id": 3,
+"set_name": "Creator i7 RTX 5080",
+"cpu_id": 6,
+"mainboard_id": 6,
+"ram_id": 9,
+"gpu_id": 6,
+"storage_id": 4,
+"psu_id": 7,
+"case_id": 4
+}
+
+### ---- PUT: set 4 เปลี่ยนเคสเป็น Mini-ITX (id 7) แต่บอร์ดเป็น Micro-ATX (expect 400) ----
+PUT {{baseUrl}}/pc-sets/4
+Content-Type: application/json
+
+{
+"customer_id": 4,
+"set_name": "Budget AM4 RX 7600",
+"cpu_id": 7,
+"mainboard_id": 7,
+"ram_id": 4,
+"gpu_id": 8,
+"storage_id": 7,
+"psu_id": 4,
+"case_id": 7
+}
+
+### ---- PUT: set ที่ไม่มีในระบบ (expect 404) ----
+PUT {{baseUrl}}/pc-sets/999
+Content-Type: application/json
+
+{
+"customer_id": 1,
+"set_name": "Office & Light Gaming i3",
+"cpu_id": 1,
+"mainboard_id": 1,
+"ram_id": 2,
+"gpu_id": 6,
+"storage_id": 2,
+"psu_id": 7,
+"case_id": 2
+}
+
+### ---- GET: ดูผลหลังอัพเดท set 1 ----
+GET {{baseUrl}}/pc-sets/1
+
+### ---- GET: ดูผลหลังอัพเดท set 2 แบบละเอียด (ไม่มีการ์ดจอแล้ว) ----
+GET {{baseUrl}}/pc-sets/2/detail
+
+
+### ============================================================
+### ข้อ 4 : แสดงคอมพิวเตอร์ set ของลูกค้า
+### ============================================================
+### ---- GET: แสดง set ทั้งหมด (7 set) ----
+GET {{baseUrl}}/pc-sets/
+
+### ---- GET: แสดง set ของลูกค้า 1 ----
+GET {{baseUrl}}/customers/1/pc-sets
+
+### ---- GET: แสดง set ของลูกค้า 2 ----
+GET {{baseUrl}}/customers/2/pc-sets
+
+### ---- GET: แสดง set ของลูกค้า 3 ----
+GET {{baseUrl}}/customers/3/pc-sets
+
+### ---- GET: แสดง set ของลูกค้า 4 ----
+GET {{baseUrl}}/customers/4/pc-sets
+
+### ---- GET: แสดง set ของลูกค้า 5 (ยังไม่มี) ----
+GET {{baseUrl}}/customers/5/pc-sets
+
+### ---- GET: แสดง set ด้วย query customer_id=3 ----
+GET {{baseUrl}}/pc-sets/?customer_id=3
+
+### ---- GET: แสดง set id 3 ----
+GET {{baseUrl}}/pc-sets/3
+
+### ---- GET: แสดง set id 1 แบบละเอียด (มีชื่อรุ่นและราคา) ----
+GET {{baseUrl}}/pc-sets/1/detail
+
+### ---- GET: แสดง set id 7 แบบละเอียด ----
+GET {{baseUrl}}/pc-sets/7/detail
+
+### ---- GET: set แบบละเอียดที่ไม่มีในระบบ (expect 404) ----
+GET {{baseUrl}}/pc-sets/999/detail
+
+### ---- GET: set ที่ไม่มีในระบบ (expect 404) ----
+GET {{baseUrl}}/pc-sets/999
+
+
+### ============================================================
+### ข้อ 4 : คัดลอก set เป็นต้นแบบให้ลูกค้าคนอื่น
+### ============================================================
+### ---- POST: คัดลอก set 2 ให้ลูกค้า 5 ----
+POST {{baseUrl}}/pc-sets/2/copy
+Content-Type: application/json
+
+{
+"customer_id": 5,
+"set_name": "Gaming AM5 ของคุณ Emi"
+}
+
+### ---- POST: คัดลอก set 4 ให้ลูกค้า 5 ----
+POST {{baseUrl}}/pc-sets/4/copy
+Content-Type: application/json
+
+{
+"customer_id": 5,
+"set_name": "Budget AM4 ของคุณ Emi"
+}
+
+### ---- POST: คัดลอก set 6 ให้ลูกค้า 2 ----
+POST {{baseUrl}}/pc-sets/6/copy
+Content-Type: application/json
+
+{
+"customer_id": 2,
+"set_name": "Ultimate ของคุณ Lorena"
+}
+
+### ---- POST: คัดลอก set 1 ให้ลูกค้า 4 ----
+POST {{baseUrl}}/pc-sets/1/copy
+Content-Type: application/json
+
+{
+"customer_id": 4,
+"set_name": "Office ของคุณ Jennie"
+}
+
+### ---- POST: คัดลอก set 5 ให้ลูกค้า 3 ----
+POST {{baseUrl}}/pc-sets/5/copy
+Content-Type: application/json
+
+{
+"customer_id": 3,
+"set_name": "Office ของคุณ Sutatta"
+}
+
+### ---- POST: คัดลอก set ที่ไม่มีในระบบ (expect 404) ----
+POST {{baseUrl}}/pc-sets/999/copy
+Content-Type: application/json
+
+{
+"customer_id": 1,
+"set_name": "Test"
+}
+
+### ---- POST: คัดลอกให้ลูกค้าที่ไม่มีในระบบ (expect 404) ----
+POST {{baseUrl}}/pc-sets/1/copy
+Content-Type: application/json
+
+{
+"customer_id": 999,
+"set_name": "Test"
+}
+
+### ---- GET: แสดง set ของลูกค้า 5 หลังคัดลอก ----
+GET {{baseUrl}}/customers/5/pc-sets
+
+### ---- GET: แสดง set ทั้งหมดหลังคัดลอก (12 set) ----
+GET {{baseUrl}}/pc-sets/
+
+### ---- GET: ดูรายละเอียด set ที่คัดลอกมา (id 8) ----
+GET {{baseUrl}}/pc-sets/8/detail
+
