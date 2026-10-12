@@ -16,6 +16,7 @@
 	<a href="/three">Each blocks</a>
 	<a href="/four">Keyed each</a>
 	<a href="/five">Blogs</a>
+	<a href="/six">Bindings</a>
 
 </nav>
 
