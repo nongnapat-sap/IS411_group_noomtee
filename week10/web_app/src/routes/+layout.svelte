@@ -17,6 +17,7 @@
 	<a href="/four">Keyed each</a>
 	<a href="/five">Blogs</a>
 	<a href="/six">Bindings</a>
+	<a href="/seven">Shared</a>
 
 </nav>
 
