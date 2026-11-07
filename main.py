@@ -1,3 +1,6 @@
+from sqlalchemy import func
+from contextlib import asynccontextmanager
+from sqlalchemy.exc import IntegrityError
 from fastapi import FastAPI, HTTPException, status
 from sqlmodel import Session, select
 from database import engine, init_db
@@ -9,7 +12,11 @@ from models import (
     VibeDB, Vibe, VibeOut,
     JournalDB, Journal, JournalOut,
     Favorite, FavoriteOut, FavoriteDB,
-    PlaceVibe, PlaceVibeOut, PlaceVibeDB
+    PlaceVibe, PlaceVibeOut, PlaceVibeDB,
+    FollowDB, Follow, FollowOut,
+    PlaceListDB, PlaceList, PlaceListOut,
+    ListPlaceDB, ListPlace, ListPlaceOut,
+    SavedListDB, SavedList, SavedListOut
 )
 
 
@@ -106,16 +113,16 @@ def seed_data():
         existing_user = session.exec(select(UserDB)).first()
         if not existing_user:
             users = [
-                UserDB(name="Timothee Chalamet", email="timothee.chalamet@example.com", password_hash="hashed_pw_004", profile_image_url="https://i.pravatar.cc/300?img=4", nationality="French", preferred_language="French"),
-                UserDB(name="Sydney Sweeney", email="sydney.sweeney@example.com", password_hash="hashed_pw_005", profile_image_url="https://i.pravatar.cc/300?img=5", nationality="American", preferred_language="English"),
-                UserDB(name="Anya Taylor-Joy", email="anya.taylorjoy@example.com", password_hash="hashed_pw_006", profile_image_url="https://i.pravatar.cc/300?img=6", nationality="British", preferred_language="English"),
-                UserDB(name="Austin Butler", email="austin.butler@example.com", password_hash="hashed_pw_007", profile_image_url="https://i.pravatar.cc/300?img=7", nationality="American", preferred_language="English"),
-                UserDB(name="Hoyeon Jung", email="hoyeon.jung@example.com", password_hash="hashed_pw_008", profile_image_url="https://i.pravatar.cc/300?img=8", nationality="Korean", preferred_language="Korean"),
-                UserDB(name="Barry Keoghan", email="barry.keoghan@example.com", password_hash="hashed_pw_009", profile_image_url="https://i.pravatar.cc/300?img=9", nationality="Irish", preferred_language="English"),
-                UserDB(name="Rosalia Vila", email="rosalia.vila@example.com", password_hash="hashed_pw_010", profile_image_url="https://i.pravatar.cc/300?img=11", nationality="Spanish", preferred_language="Spanish"),
-                UserDB(name="Jung Ho-yeon", email="jung.hoyeon2@example.com", password_hash="hashed_pw_011", profile_image_url="https://i.pravatar.cc/300?img=12", nationality="Korean", preferred_language="English"),
-                UserDB(name="Charles Melton", email="charles.melton@example.com", password_hash="hashed_pw_012", profile_image_url="https://i.pravatar.cc/300?img=13", nationality="American", preferred_language="English"),
-                UserDB(name="Greta Lee", email="greta.lee@example.com", password_hash="hashed_pw_013", profile_image_url="https://i.pravatar.cc/300?img=14", nationality="Korean-American", preferred_language="English"),
+                UserDB(username="timothee_c", name="Timothee Chalamet", email="timothee.chalamet@example.com", password_hash="hashed_pw_004", profile_image_url="https://i.pravatar.cc/300?img=4", nationality="French", preferred_language="French"),
+                UserDB(username="sydney_s", name="Sydney Sweeney", email="sydney.sweeney@example.com", password_hash="hashed_pw_005", profile_image_url="https://i.pravatar.cc/300?img=5", nationality="American", preferred_language="English"),
+                UserDB(username="anya_tj", name="Anya Taylor-Joy", email="anya.taylorjoy@example.com", password_hash="hashed_pw_006", profile_image_url="https://i.pravatar.cc/300?img=6", nationality="British", preferred_language="English"),
+                UserDB(username="austin_b", name="Austin Butler", email="austin.butler@example.com", password_hash="hashed_pw_007", profile_image_url="https://i.pravatar.cc/300?img=7", nationality="American", preferred_language="English"),
+                UserDB(username="hoyeon_j", name="Hoyeon Jung", email="hoyeon.jung@example.com", password_hash="hashed_pw_008", profile_image_url="https://i.pravatar.cc/300?img=8", nationality="Korean", preferred_language="Korean"),
+                UserDB(username="barry_k", name="Barry Keoghan", email="barry.keoghan@example.com", password_hash="hashed_pw_009", profile_image_url="https://i.pravatar.cc/300?img=9", nationality="Irish", preferred_language="English"),
+                UserDB(username="rosalia_v", name="Rosalia Vila", email="rosalia.vila@example.com", password_hash="hashed_pw_010", profile_image_url="https://i.pravatar.cc/300?img=11", nationality="Spanish", preferred_language="Spanish"),
+                UserDB(username="jung_hy", name="Jung Ho-yeon", email="jung.hoyeon2@example.com", password_hash="hashed_pw_011", profile_image_url="https://i.pravatar.cc/300?img=12", nationality="Korean", preferred_language="English"),
+                UserDB(username="charles_m", name="Charles Melton", email="charles.melton@example.com", password_hash="hashed_pw_012", profile_image_url="https://i.pravatar.cc/300?img=13", nationality="American", preferred_language="English"),
+                UserDB(username="greta_l", name="Greta Lee", email="greta.lee@example.com", password_hash="hashed_pw_013", profile_image_url="https://i.pravatar.cc/300?img=14", nationality="Korean-American", preferred_language="English"),
             ]
             session.add_all(users)
             session.commit()
@@ -151,12 +158,114 @@ def seed_data():
             session.add_all(favorites)
             session.commit()
 
+        # =========================
+        # FOLLOWS
+        # =========================
+        existing_follow = session.exec(select(FollowDB)).first()
+        if not existing_follow:
+            follows = [
+                FollowDB(follower_id=1, following_id=2),
+                FollowDB(follower_id=1, following_id=3),
+                FollowDB(follower_id=2, following_id=1),
+                FollowDB(follower_id=3, following_id=1),
+                FollowDB(follower_id=4, following_id=5),
+                FollowDB(follower_id=5, following_id=4),
+                FollowDB(follower_id=6, following_id=7),
+                FollowDB(follower_id=7, following_id=8),
+                FollowDB(follower_id=8, following_id=9),
+                FollowDB(follower_id=9, following_id=10),
+                FollowDB(follower_id=10, following_id=1),
+                FollowDB(follower_id=2, following_id=4),
+                FollowDB(follower_id=3, following_id=5),
+                FollowDB(follower_id=6, following_id=2),
+                FollowDB(follower_id=8, following_id=3),
+            ]
+            session.add_all(follows)
+            session.commit()
 
-init_db()
-# Insert initial data
-seed_data()
-app = FastAPI()
+        # =========================
+        # LISTS (Collections)
+        # =========================
+        existing_list = session.exec(select(PlaceListDB)).first()
+        if not existing_list:
+            lists = [
+                PlaceListDB(user_id=1, list_name="Ultimate Bangkok Rooftops", description="Best views in the city", cover_image_url="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf", is_public=True),
+                PlaceListDB(user_id=2, list_name="Jazz & Chill Night", description="Top live music spots", cover_image_url="https://images.unsplash.com/photo-1511192336575-5a79af67a629", is_public=True),
+                PlaceListDB(user_id=3, list_name="Late Night Eats", description="Where to go after clubbing", cover_image_url="https://images.unsplash.com/photo-1575037614876-c38a4d44f5b8", is_public=True),
+                PlaceListDB(user_id=4, list_name="Speakeasy Hunt", description="Hidden bars and secret passwords", cover_image_url="https://images.unsplash.com/photo-1514933651103-005eec06c04b", is_public=True),
+                PlaceListDB(user_id=5, list_name="My Secret Spots", description="Private list only for me", cover_image_url="https://images.unsplash.com/photo-1492684223066-81342ee5ff30", is_public=False),
+            ]
+            session.add_all(lists)
+            session.commit()
 
+        # =========================
+        # LIST_PLACES (Places in Lists)
+        # =========================
+        existing_list_place = session.exec(select(ListPlaceDB)).first()
+        if not existing_list_place:
+            list_places = [
+                # List 1 (Rooftops)
+                ListPlaceDB(list_id=1, place_id=6, position=1),
+                ListPlaceDB(list_id=1, place_id=9, position=2),
+                ListPlaceDB(list_id=1, place_id=3, position=3),
+                ListPlaceDB(list_id=1, place_id=2, position=4),
+                # List 2 (Jazz & Chill)
+                ListPlaceDB(list_id=2, place_id=1, position=1),
+                ListPlaceDB(list_id=2, place_id=4, position=2),
+                ListPlaceDB(list_id=2, place_id=5, position=3),
+                # List 3 (Late Night Eats)
+                ListPlaceDB(list_id=3, place_id=7, position=1),
+                ListPlaceDB(list_id=3, place_id=4, position=2),
+                ListPlaceDB(list_id=3, place_id=10, position=3),
+                # List 4 (Speakeasy)
+                ListPlaceDB(list_id=4, place_id=2, position=1),
+                ListPlaceDB(list_id=4, place_id=8, position=2),
+                ListPlaceDB(list_id=4, place_id=1, position=3),
+                ListPlaceDB(list_id=4, place_id=5, position=4),
+                # List 5 (Private)
+                ListPlaceDB(list_id=5, place_id=10, position=1),
+            ]
+            session.add_all(list_places)
+            session.commit()
+
+        # =========================
+        # SAVED_LISTS
+        # =========================
+        existing_saved = session.exec(select(SavedListDB)).first()
+        if not existing_saved:
+            saved_lists = [
+                SavedListDB(user_id=2, list_id=1),
+                SavedListDB(user_id=3, list_id=1),
+                SavedListDB(user_id=4, list_id=1),
+                SavedListDB(user_id=8, list_id=1),
+                
+                SavedListDB(user_id=1, list_id=2),
+                SavedListDB(user_id=5, list_id=2),
+                SavedListDB(user_id=6, list_id=2),
+                SavedListDB(user_id=9, list_id=2),
+                
+                SavedListDB(user_id=1, list_id=3),
+                SavedListDB(user_id=8, list_id=3),
+                SavedListDB(user_id=9, list_id=3),
+                SavedListDB(user_id=10, list_id=3),
+                
+                SavedListDB(user_id=10, list_id=4),
+                SavedListDB(user_id=2, list_id=4),
+                SavedListDB(user_id=7, list_id=4),
+            ]
+            session.add_all(saved_lists)
+            session.commit()    
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # ทำงานตอนที่เซิร์ฟเวอร์เริ่มรัน (Startup)
+    init_db()
+    seed_data()
+    yield
+    # หากมีโค้ดที่ต้องทำงานตอนปิดเซิร์ฟเวอร์ (Shutdown) ให้ใส่หลัง yield
+
+# ประกาศ FastAPI app โดยผูก lifespan เข้าไป
+app = FastAPI(lifespan=lifespan)
 
 # =========================================================
 # AREA
@@ -320,6 +429,8 @@ def update_place(place_id: int, new_place: Place) -> PlaceOut:
         return place
 
 
+from sqlalchemy.exc import IntegrityError # ตรวจสอบให้แน่ใจว่า import ตัวนี้ไว้ด้านบนไฟล์ด้วย
+
 # =========================================================
 # USER
 # =========================================================
@@ -346,9 +457,16 @@ def create_user(user: User) -> UserOut:
     new_user = UserDB(**user.model_dump())
     with Session(engine) as session:
         session.add(new_user)
-        session.commit()
-        session.refresh(new_user)
-        return new_user
+        try:
+            session.commit()
+            session.refresh(new_user)
+            return new_user
+        except IntegrityError:
+            session.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Username or email already exists"
+            )
 
 
 @app.put("/users/{user_id}", status_code=status.HTTP_200_OK)
@@ -356,6 +474,7 @@ def update_user(user_id: int, new_user: User) -> UserOut:
     with Session(engine) as session:
         user = session.get(UserDB, user_id)
         if user is not None:
+            user.username = new_user.username # <-- เพิ่มฟิลด์ username
             user.name = new_user.name
             user.email = new_user.email
             user.password_hash = new_user.password_hash
@@ -363,16 +482,47 @@ def update_user(user_id: int, new_user: User) -> UserOut:
             user.nationality = new_user.nationality
             user.preferred_language = new_user.preferred_language
             user.updated_at = datetime.utcnow()
+            
             session.add(user)
-            session.commit()
-            session.refresh(user)
-            return user
+            try:
+                session.commit()
+                session.refresh(user)
+                return user
+            except IntegrityError:
+                session.rollback()
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Username or email already exists"
+                )
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail="User not found"
     )
 
+@app.put("/users/{user_id}", status_code=status.HTTP_200_OK)
+def update_user(user_id: int, new_user: User) -> UserOut:
+    # ... (โค้ดเดิมของ update_user) ...
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="User not found"
+    )
+
+# ---------------------------------------------------------
+# วางโค้ด Block 1 (read_user_followers และ read_user_following)
+# ---------------------------------------------------------
+
+@app.get("/users/{user_id}/followers", status_code=status.HTTP_200_OK)
+def read_user_followers(user_id: int) -> list[UserOut]:
+    with Session(engine) as session:
+        statement = select(UserDB).join(FollowDB, FollowDB.follower_id == UserDB.user_id).where(FollowDB.following_id == user_id)
+        return session.exec(statement).all()
+
+@app.get("/users/{user_id}/following", status_code=status.HTTP_200_OK)
+def read_user_following(user_id: int) -> list[UserOut]:
+    with Session(engine) as session:
+        statement = select(UserDB).join(FollowDB, FollowDB.following_id == UserDB.user_id).where(FollowDB.follower_id == user_id)
+        return session.exec(statement).all()
 
 # =========================================================
 # VIBE
@@ -679,5 +829,293 @@ def delete_place(place_id: int):
             area.total_places -= 1
             session.add(area)
         session.delete(place)
+        session.commit()
+        return
+
+# =========================================================
+# FOLLOWS (ผู้ติดตาม และ การติดตาม)
+# =========================================================
+
+@app.get("/follows/", status_code=status.HTTP_200_OK)
+def read_follows(
+    follower_id: int | None = None,
+    following_id: int | None = None,
+    offset: int = 0,
+    limit: int = 100
+) -> list[FollowOut]:
+    with Session(engine) as session:
+        statement = select(FollowDB)
+        if follower_id is not None:
+            statement = statement.where(FollowDB.follower_id == follower_id)
+        if following_id is not None:
+            statement = statement.where(FollowDB.following_id == following_id)
+        statement = statement.offset(offset).limit(limit)
+        return session.exec(statement).all()
+
+@app.post("/follows/", status_code=status.HTTP_201_CREATED)
+def create_follow(follow: Follow) -> FollowOut:
+    if follow.follower_id == follow.following_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Users cannot follow themselves"
+        )
+    with Session(engine) as session:
+        follower = session.get(UserDB, follow.follower_id)
+        following = session.get(UserDB, follow.following_id)
+        if follower is None or following is None:
+             raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Follower or Following user not found"
+            )
+            
+        new_follow = FollowDB(**follow.model_dump())
+        session.add(new_follow)
+        try:
+            session.commit()
+            session.refresh(new_follow)
+            return new_follow
+        except IntegrityError:
+            session.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Follow relationship already exists"
+            )
+
+@app.delete("/follows/{follow_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_follow(follow_id: int):
+    with Session(engine) as session:
+        follow = session.get(FollowDB, follow_id)
+        if follow is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Follow relationship not found"
+            )
+        session.delete(follow)
+        session.commit()
+        return
+
+# =========================================================
+# LISTS (Collections ของสถานที่)
+# =========================================================
+@app.get("/lists/", status_code=status.HTTP_200_OK)
+def read_lists(
+    user_id: int | None = None,
+    is_public: bool | None = None,
+    offset: int = 0,
+    limit: int = 100
+) -> list[PlaceListOut]:
+    with Session(engine) as session:
+        statement = select(PlaceListDB)
+        if user_id is not None:
+            statement = statement.where(PlaceListDB.user_id == user_id)
+        if is_public is not None:
+             statement = statement.where(PlaceListDB.is_public == is_public)
+        statement = statement.offset(offset).limit(limit)
+        return session.exec(statement).all()
+
+@app.get("/lists/popular", status_code=status.HTTP_200_OK)
+def read_popular_lists(days: int = 7, limit: int = 10) -> list[PlaceListOut]:
+    with Session(engine) as session:
+        statement = (
+            select(PlaceListDB)
+            .join(SavedListDB, isouter=True)
+            .where(PlaceListDB.is_public == True)
+            .group_by(PlaceListDB.list_id)
+            .order_by(func.count(SavedListDB.saved_list_id).desc())
+            .limit(limit)
+        )
+        return session.exec(statement).all()
+
+@app.get("/lists/{list_id}", status_code=status.HTTP_200_OK)
+def read_list(list_id: int) -> PlaceListOut:
+     with Session(engine) as session:
+        place_list = session.get(PlaceListDB, list_id)
+        if place_list is not None:
+            return place_list
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="List not found"
+        )
+
+@app.post("/lists/", status_code=status.HTTP_201_CREATED)
+def create_list(place_list: PlaceList) -> PlaceListOut:
+    with Session(engine) as session:
+        user = session.get(UserDB, place_list.user_id)
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        new_list = PlaceListDB(**place_list.model_dump())
+        session.add(new_list)
+        session.commit()
+        session.refresh(new_list)
+        return new_list
+
+@app.put("/lists/{list_id}", status_code=status.HTTP_200_OK)
+def update_list(list_id: int, new_list: PlaceList) -> PlaceListOut:
+    with Session(engine) as session:
+        db_list = session.get(PlaceListDB, list_id)
+        if db_list is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="List not found"
+            )
+        
+        # User owner check (Optional, depending on your auth logic later)
+        if db_list.user_id != new_list.user_id:
+             raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Cannot change the owner of the list"
+            )
+
+        db_list.list_name = new_list.list_name
+        db_list.description = new_list.description
+        db_list.cover_image_url = new_list.cover_image_url
+        db_list.is_public = new_list.is_public
+        
+        session.add(db_list)
+        session.commit()
+        session.refresh(db_list)
+        return db_list
+
+@app.delete("/lists/{list_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_list(list_id: int):
+    with Session(engine) as session:
+        db_list = session.get(PlaceListDB, list_id)
+        if db_list is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="List not found"
+            )
+            
+        # 1. ลบความสัมพันธ์ (ListPlace) ออกจาก list นี้ก่อน
+        for list_place in session.exec(select(ListPlaceDB).where(ListPlaceDB.list_id == list_id)).all():
+            session.delete(list_place)
+            
+        # 2. ลบ SavedList ที่คนอื่นกดเซฟไว้
+        for saved_list in session.exec(select(SavedListDB).where(SavedListDB.list_id == list_id)).all():
+             session.delete(saved_list)
+             
+        # 3. ลบ List ตัวมันเอง
+        session.delete(db_list)
+        session.commit()
+        return
+
+
+# =========================================================
+# LIST_PLACES (เพิ่มสถานที่เข้าไปใน List)
+# =========================================================
+
+@app.get("/list-places/{list_id}", status_code=status.HTTP_200_OK)
+def read_places_in_list(list_id: int) -> list[ListPlaceOut]:
+     with Session(engine) as session:
+         statement = select(ListPlaceDB).where(ListPlaceDB.list_id == list_id).order_by(ListPlaceDB.position)
+         return session.exec(statement).all()
+
+@app.post("/list-places/", status_code=status.HTTP_201_CREATED)
+def add_place_to_list(list_place: ListPlace) -> ListPlaceOut:
+    with Session(engine) as session:
+        db_list = session.get(PlaceListDB, list_place.list_id)
+        place = session.get(PlaceDB, list_place.place_id)
+        
+        if db_list is None or place is None:
+             raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="List or Place not found"
+            )
+            
+        new_list_place = ListPlaceDB(**list_place.model_dump())
+        session.add(new_list_place)
+        
+        try:
+            session.commit()
+            session.refresh(new_list_place)
+            return ListPlaceOut(
+                list_id=new_list_place.list_id,
+                place_id=new_list_place.place_id,
+                position=new_list_place.position,
+                added_at=new_list_place.added_at
+            )
+        except IntegrityError:
+             session.rollback()
+             raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Place is already in this list"
+            )
+
+@app.delete("/list-places/{list_id}/{place_id}", status_code=status.HTTP_204_NO_CONTENT)
+def remove_place_from_list(list_id: int, place_id: int):
+    with Session(engine) as session:
+        list_place = session.get(ListPlaceDB, (list_id, place_id))
+        if list_place is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Place not found in this list"
+            )
+        session.delete(list_place)
+        session.commit()
+        return
+
+# =========================================================
+# SAVED_LISTS (User เซฟ List ของคนอื่น)
+# =========================================================
+
+@app.get("/saved-lists/", status_code=status.HTTP_200_OK)
+def read_saved_lists(
+    user_id: int | None = None,
+    offset: int = 0,
+    limit: int = 100
+) -> list[SavedListOut]:
+    with Session(engine) as session:
+        statement = select(SavedListDB)
+        if user_id is not None:
+            statement = statement.where(SavedListDB.user_id == user_id)
+        statement = statement.offset(offset).limit(limit)
+        return session.exec(statement).all()
+
+
+@app.post("/saved-lists/", status_code=status.HTTP_201_CREATED)
+def create_saved_list(saved_list: SavedList) -> SavedListOut:
+    with Session(engine) as session:
+        user = session.get(UserDB, saved_list.user_id)
+        target_list = session.get(PlaceListDB, saved_list.list_id)
+        
+        if user is None or target_list is None:
+             raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User or Target List not found"
+            )
+            
+        # Optional: Prevent user from saving their own list
+        if user.user_id == target_list.user_id:
+             raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Cannot save your own list"
+            )
+            
+        new_saved_list = SavedListDB(**saved_list.model_dump())
+        session.add(new_saved_list)
+        try:
+            session.commit()
+            session.refresh(new_saved_list)
+            return new_saved_list
+        except IntegrityError:
+             session.rollback()
+             raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="You have already saved this list"
+            )
+
+@app.delete("/saved-lists/{saved_list_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_saved_list(saved_list_id: int):
+    with Session(engine) as session:
+        saved_list = session.get(SavedListDB, saved_list_id)
+        if saved_list is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Saved List record not found"
+            )
+        session.delete(saved_list)
         session.commit()
         return
