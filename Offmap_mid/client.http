@@ -1,0 +1,221 @@
+@baseUrl = http://127.0.0.1:8000
+### ============================================================
+### AREA
+### ============================================================
+### ---- GET: Read all Areas ----
+GET {{baseUrl}}/areas/
+
+### ---- CREATE Area 9: Riverside ----
+POST {{baseUrl}}/areas
+Content-Type: application/json
+
+
+{
+"area_name": "Riverside",
+"district": "Bang Kho Laem",
+"sub_district": "Bang Kho Laem",
+"latitude": 13.7050,
+"longitude": 100.5080,
+"description": "Chao Phraya riverfront dining and bars",
+"cover_image_url": "https://example.com/images/riverside.jpg"
+}
+
+### ---- GET: Read Area ID 9 ----
+GET {{baseUrl}}/areas/9
+
+### ---- PUT: Update Area ID 9 ----
+PUT {{baseUrl}}/areas/9
+Content-Type: application/json
+
+{
+  "area_name": "Riverside",
+  "district": "Bang Kho Laem",
+  "sub_district": "Bang Kho Laem",
+  "latitude": 13.7050,
+  "longitude": 100.5080,
+  "description": "Scenic riverside escape featuring waterfront dining, chilled breezes, and illuminated night landmarks",
+  "cover_image_url": "https://example.com/images/riverside.jpg"
+}
+
+### ---- GET: Read all Place IDs inside Area 9 (Riverside) ----
+GET {{baseUrl}}/areas/9/places
+### ---- GET: Read all Place IDs inside Area 1 (Ratchathewi, expect 2 places) ----
+GET {{baseUrl}}/areas/1/places
+
+### ============================================================
+### PLACE
+### ============================================================
+### ---- GET: Read all Places ----
+GET {{baseUrl}}/places/
+
+### ---- CREATE Place 11: River Bank Lounge ----
+### area_id = 9 → Riverside
+POST {{baseUrl}}/places/
+Content-Type: application/json
+
+{
+  "place_name": "River Bank Lounge",
+  "description": "Waterfront lounge with live jazz on weekends",
+  "area_id": 9,
+  "address": "Charoen Nakhon Rd, Bang Kho Laem, Bangkok",
+  "latitude": 13.7055,
+  "longitude": 100.5085,
+  "price_level": "400-1200 THB",
+  "opening_time": "18:00",
+  "closing_time": "00:30",
+  "booking_link": null,
+  "image_url": null
+}
+### ---- GET: Read all Place IDs inside Area 9 (Riverside) ----
+GET {{baseUrl}}/areas/9/places
+
+### ---- GET: Read Place ID 11 ----
+GET {{baseUrl}}/places/11
+### ---- PUT: Update Place ID 11 ----
+PUT {{baseUrl}}/places/11
+Content-Type: application/json
+
+{
+  "place_name": "River Bank Lounge",
+  "description": "A breezy riverside cocktail retreat with panoramic Chao Phraya views and acoustic jazz vibes",
+  "area_id": 9,
+  "address": "Charoen Nakhon Rd, Bang Kho Laem, Bangkok",
+  "latitude": 13.7055,
+  "longitude": 100.5085,
+  "price_level": "400-1200 THB",
+  "opening_time": "18:00",
+  "closing_time": "00:30",
+  "booking_link": null,
+  "image_url": null
+}
+
+### ---- GET: Filter Places by Area 9 (Riverside) ----
+GET {{baseUrl}}/places/?area_id=9
+### ---- GET: Filter Places by Area 1 (Ratchathewi) ----
+GET {{baseUrl}}/places/?area_id=1
+### ---- GET: Filter Places with pagination (limit 2, offset 0) ----
+GET {{baseUrl}}/places/?limit=2&offset=0
+
+
+### ใช้ทดสอบว่า total_places ของ Area 3 ลดลง และ Area 9 เพิ่มขึ้น
+### ---- GET: Check Area 3 before moving Place 3 ----
+GET {{baseUrl}}/areas/3
+
+### ---- GET: Check Area 9 before moving Place 3 ----
+GET {{baseUrl}}/areas/9
+
+### ---- GET: Place ID 3 (Upper House) ----
+GET  {{baseUrl}}/places/3
+### ---- PUT: Move Place ID 3 (Upper House) from Area 3 → Area 9 ----
+PUT {{baseUrl}}/places/3
+Content-Type: application/json
+
+{
+"place_name": "Upper House",
+"description": "A high-energy nightclub and bar",
+"area_id": 9,
+"address": "2nd floor of 24 BLVD at 88 Sukhumvit 24 Alley, Bangkok",
+"latitude": 13.7500,
+"longitude": 100.5700,
+"price_level": "400-1200 THB",
+"opening_time": "21:00",
+"closing_time": "03:30",
+"booking_link": null,
+"image_url": null
+}
+### ---- GET: Confirm Area 9 total_places increased ----
+GET {{baseUrl}}/areas/9
+### ---- GET: Confirm Area 3 total_places decreased ----
+GET {{baseUrl}}/areas/3
+
+### ============================================================
+### VIBE
+### ============================================================
+### ---- GET: Read all Vibes ----
+GET {{baseUrl}}/vibes/
+
+### ---- CREATE Vibe 7: Live Jazz ----
+POST {{baseUrl}}/vibes/
+Content-Type: application/json
+
+{
+  "vibe_name": "Live Jazz",
+  "description": "Smooth, soulful live jazz and acoustic music performances"
+}
+### ---- GET: Read Vibe ID 7 ----
+GET {{baseUrl}}/vibes/7
+### ---- PUT: Update Vibe ID 7 ----
+PUT {{baseUrl}}/vibes/7
+Content-Type: application/json
+
+{
+"vibe_name": "Social Gather",
+"description": "Great for meeting new people and lively group hangouts"
+}
+
+### ============================================================
+### USER
+### ============================================================
+### ---- GET: Read all Users ----
+GET {{baseUrl}}/users/
+
+### ---- CREATE User 11 ----
+POST {{baseUrl}}/users/
+Content-Type: application/json
+
+{
+"name": "Kendall Jenner",
+"email": "kendall.jenner@example.com",
+"password_hash": "hashed_pw_001",
+"profile_image_url": "https://i.pravatar.cc/300?img=1",
+"nationality": "American",
+"preferred_language": "English"
+}
+
+### ---- GET: Read User ID 11 ----
+GET {{baseUrl}}/users/11
+### ---- PUT: Update User ID 11 ----
+PUT {{baseUrl}}/users/11
+Content-Type: application/json
+
+{
+"name": "Kendall Nicole Jenner",
+"email": "kendall.jenner.updated@example.com",
+"password_hash": "hashed_pw_001_new",
+"profile_image_url": "https://i.pravatar.cc/300?img=1",
+"nationality": "American",
+"preferred_language": "English"
+}
+
+### ============================================================
+### FAVORITE
+### ============================================================
+### ---- GET: Read all Favorites ----
+GET {{baseUrl}}/favorites/
+
+### ---- Create Favorite 7 ----
+POST {{baseUrl}}/favorites/
+Content-Type: application/json
+
+{
+"user_id": 1,
+"place_id": 1
+}
+### ---- Create Favorite 8 ----
+POST {{baseUrl}}/favorites/
+Content-Type: application/json
+
+
+{
+"user_id": 1,
+"place_id": 2
+}
+
+### ---- GET: Read Favorite ID 7 ----
+GET {{baseUrl}}/favorites/7
+### ---- GET: Filter Favorites by User 1 ----
+GET {{baseUrl}}/favorites/?user_id=1
+### ---- GET: Filter Favorites by Place 2 ----
+GET {{baseUrl}}/favorites/?place_id=2
+### ---- DELETE: Delete Favorite ID 7 ----
+DELETE {{baseUrl}}/favorites/7
