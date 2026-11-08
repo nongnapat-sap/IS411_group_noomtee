@@ -1,0 +1,94 @@
+/* สไตล์กลางที่ทุกหน้าใช้ร่วมกัน (ลิงก์จาก app.html แบบเดียวกับ Bulma) */
+:root {
+	--lime: #ccff00;
+	--card: #141414;
+	--card-hover: #1b1b1b;
+	--line: #2a2a2a;
+	--muted: #8f8f8f;
+}
+
+body {
+	background: #000;
+	color: #fff;
+}
+
+.eyebrow {
+	color: var(--lime);
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+
+.page-title {
+	color: #fff;
+	font-size: clamp(1.8rem, 4vw, 2.6rem);
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	line-height: 1.1;
+}
+
+.section-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.section-head h2 {
+	color: #fff;
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+
+.see-all {
+	color: var(--lime);
+	font-size: 0.8rem;
+	font-weight: 700;
+}
+
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.4rem 0.9rem;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	background: var(--card);
+	color: #d6d6d6;
+	font: inherit;
+	font-size: 0.8rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: border-color 0.15s, color 0.15s;
+}
+
+.chip:hover {
+	border-color: var(--lime);
+	color: #fff;
+}
+
+.chip.active {
+	background: var(--lime);
+	border-color: var(--lime);
+	color: #000;
+}
+
+.empty {
+	padding: 2rem;
+	border: 1px dashed var(--line);
+	border-radius: 12px;
+	color: var(--muted);
+	text-align: center;
+}
+
+.stack {
+	margin-bottom: 3rem;
+}

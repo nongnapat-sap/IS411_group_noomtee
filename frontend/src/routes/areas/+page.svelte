@@ -1,2 +1,22 @@
-<h1 class="title has-text-white mt-5">Areas</h1>
-<p class="has-text-grey">This page is currently under development.</p>
+<script>
+	import AreaCard from '#lib/AreaCard.svelte';
+
+	let { data } = $props();
+</script>
+
+<div class="stack">
+	<p class="eyebrow">Areas</p>
+	<h1 class="page-title">Neighbourhoods of Bangkok</h1>
+</div>
+
+{#if data.areas.length}
+	<div class="columns is-multiline">
+		{#each data.areas as area (area.area_id)}
+			<div class="column is-3-desktop is-6-tablet">
+				<AreaCard {area} />
+			</div>
+		{/each}
+	</div>
+{:else}
+	<p class="empty">No areas yet.</p>
+{/if}
