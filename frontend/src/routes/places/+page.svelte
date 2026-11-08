@@ -1,7 +1,7 @@
 <script>
 	import PlaceCard from '#lib/PlaceCard.svelte';
 
-	let { data } = $props();
+	let { data, form } = $props();
 
 	// ค่าที่ผู้ใช้เลือก (ผูกกับ input ด้วย bind:value)
 	let searchQuery = $state('');
@@ -28,6 +28,10 @@
 	<p class="eyebrow">Explore</p>
 	<h1 class="page-title">Find places</h1>
 </div>
+
+{#if form?.message}
+	<div class="notification is-danger is-light">{form.message}</div>
+{/if}
 
 <div class="filter-controls stack">
 	<input
@@ -58,8 +62,21 @@
 	<p class="count">{filteredPlaces.length} {filteredPlaces.length === 1 ? 'place' : 'places'}</p>
 	<div class="columns is-multiline">
 		{#each filteredPlaces as place (place.place_id)}
-			<div class="column is-4-desktop is-6-tablet">
-				<PlaceCard {place} />
+			<div class="column is-4-desktop is-6-tablet with-action">
+				<div class="grow"><PlaceCard {place} /></div>
+
+				<!-- ปุ่ม favorite: ถ้ากดไว้แล้ว → removeFavorite, ถ้ายัง → addFavorite -->
+				{#if data.favoriteIdOf[place.place_id]}
+					<form method="POST" action="?/removeFavorite" class="fav-form">
+						<input type="hidden" name="favorite_id" value={data.favoriteIdOf[place.place_id]} />
+						<button class="fav-btn saved">♥ In favorites</button>
+					</form>
+				{:else}
+					<form method="POST" action="?/addFavorite" class="fav-form">
+						<input type="hidden" name="place_id" value={place.place_id} />
+						<button class="fav-btn">♡ Add to favorites</button>
+					</form>
+				{/if}
 			</div>
 		{/each}
 	</div>
@@ -104,6 +121,38 @@
 	}
 	.filter-select:focus {
 		border-color: var(--lime);
+	}
+	/* ให้การ์ดยืดเต็มความสูง แล้วปุ่มอยู่ใต้การ์ดพอดี */
+	.with-action {
+		display: flex;
+		flex-direction: column;
+	}
+	.grow {
+		flex: 1;
+	}
+	.fav-form {
+		margin-top: 0.5rem;
+	}
+	.fav-btn {
+		width: 100%;
+		padding: 0.45rem;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		background: transparent;
+		color: #d6d6d6;
+		font: inherit;
+		font-size: 0.8rem;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	.fav-btn:hover {
+		border-color: var(--lime);
+		color: #fff;
+	}
+	.fav-btn.saved {
+		background: var(--lime);
+		border-color: var(--lime);
+		color: #000;
 	}
 	.count {
 		margin-bottom: 0.75rem;

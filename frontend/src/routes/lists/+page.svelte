@@ -1,7 +1,8 @@
 <script>
 	import ListCard from '#lib/ListCard.svelte';
+	import SaveButton from '#lib/SaveButton.svelte';
 
-	let { data } = $props();
+	let { data, form } = $props();
 
 	let q = $state('');
 	let activeVibe = $state(null);
@@ -26,6 +27,10 @@
 	<p class="eyebrow">Lists</p>
 	<h1 class="page-title">Lists from other people</h1>
 </div>
+
+{#if form?.message}
+	<div class="notification is-danger is-light">{form.message}</div>
+{/if}
 
 <div class="search stack">
 	<input
@@ -63,8 +68,9 @@
 		{#if results.length}
 			<div class="columns is-multiline">
 				{#each results as list (list.list_id)}
-					<div class="column is-3-desktop is-6-tablet">
-						<ListCard {list} vibeName={list.vibe_name} />
+					<div class="column is-3-desktop is-6-tablet with-action">
+						<div class="grow"><ListCard {list} vibeName={list.vibe_name} /></div>
+						<SaveButton {list} savedListId={data.savedIdOf[list.list_id]} />
 					</div>
 				{/each}
 			</div>
@@ -82,8 +88,9 @@
 		</div>
 		<div class="columns is-multiline">
 			{#each data.popular as list (list.list_id)}
-				<div class="column is-3-desktop is-6-tablet">
-					<ListCard {list} vibeName={list.vibe_name} />
+				<div class="column is-3-desktop is-6-tablet with-action">
+					<div class="grow"><ListCard {list} vibeName={list.vibe_name} /></div>
+						<SaveButton {list} savedListId={data.savedIdOf[list.list_id]} />
 				</div>
 			{/each}
 		</div>
@@ -96,8 +103,9 @@
 		{#if data.lists.length}
 			<div class="columns is-multiline">
 				{#each data.lists as list (list.list_id)}
-					<div class="column is-3-desktop is-6-tablet">
-						<ListCard {list} vibeName={list.vibe_name} />
+					<div class="column is-3-desktop is-6-tablet with-action">
+						<div class="grow"><ListCard {list} vibeName={list.vibe_name} /></div>
+						<SaveButton {list} savedListId={data.savedIdOf[list.list_id]} />
 					</div>
 				{/each}
 			</div>
@@ -129,6 +137,14 @@
 		border-color: var(--line);
 		color: #fff;
 		border-radius: 999px;
+	}
+	/* ให้การ์ดยืดเต็มความสูง แล้วปุ่มอยู่ใต้การ์ดพอดี */
+	.with-action {
+		display: flex;
+		flex-direction: column;
+	}
+	.grow {
+		flex: 1;
 	}
 	.muted {
 		color: var(--muted);

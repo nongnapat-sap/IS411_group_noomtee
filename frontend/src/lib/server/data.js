@@ -107,11 +107,15 @@ export async function getListsData(fetch, userId, catalog) {
 		};
 	});
 
-	const mySavedIds = saved.filter((s) => s.user_id === userId).map((s) => s.list_id);
+	// list_id → saved_list_id ของผู้ใช้คนนี้ (ใช้ทั้งเช็กว่า save แล้วหรือยัง และส่งไปตอนเลิก save)
+	const savedIdOf = {};
+	for (const s of saved) if (s.user_id === userId) savedIdOf[s.list_id] = s.saved_list_id;
+
 	return {
 		others: all.filter((l) => l.is_public && l.owner_id !== userId),
 		mine: all.filter((l) => l.owner_id === userId),
-		saved: all.filter((l) => mySavedIds.includes(l.list_id))
+		saved: all.filter((l) => savedIdOf[l.list_id]),
+		savedIdOf
 	};
 }
 
@@ -129,4 +133,13 @@ export async function getFollowData(fetch, userId) {
 		})),
 		followerCount: followers.length
 	};
+}
+
+// ---------------- Favorites ----------------
+/** place_id → favorite_id ของผู้ใช้คนนี้ (FastAPI ไม่ส่งรายการที่ถูกลบแล้วมา) */
+export async function getFavoriteIdOf(fetch, userId) {
+	const favorites = await api(`/favorites/?user_id=${userId}`, fetch);
+	const favoriteIdOf = {};
+	for (const f of favorites) favoriteIdOf[f.place_id] = f.favorite_id;
+	return favoriteIdOf;
 }

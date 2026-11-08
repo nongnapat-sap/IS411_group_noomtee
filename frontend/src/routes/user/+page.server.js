@@ -1,6 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { CURRENT_USER_ID } from '#lib/config.js';
-import { API_URL } from '#lib/server/api.js';
+import { findOne, send } from '#lib/server/api.js';
 import { getCatalog, getUserData, getListsData, getFollowData } from '#lib/server/data.js';
 
 export async function load({ fetch }) {
@@ -24,7 +24,9 @@ export async function load({ fetch }) {
 	};
 }
 
-// อ่านค่าจากฟอร์ม journal (formData ได้ค่าเป็น string เสมอ จึงต้องแปลงเป็นตัวเลข)
+// ---------------------------------------------------------------
+// อ่านค่าจากฟอร์ม (formData ได้ค่าเป็น string เสมอ จึงต้องแปลงเป็นตัวเลข)
+// ---------------------------------------------------------------
 function readJournal(fd) {
 	const visited = String(fd.get('visited_at') ?? '').trim();
 	return {
@@ -38,46 +40,60 @@ function readJournal(fd) {
 	};
 }
 
-// ตรวจข้อมูลก่อนส่งไป FastAPI ถ้าผิดคืนข้อความกลับไปที่หน้าเว็บ
-function validate(journal) {
-	if (!journal.place_id) return 'กรุณาเลือกสถานที่';
-	if (!journal.title) return 'กรุณาใส่หัวข้อ';
-	if (!(journal.rating >= 1 && journal.rating <= 5)) return 'คะแนนต้องอยู่ระหว่าง 1–5';
+// ---------------------------------------------------------------
+// Validation ชั้น +page.server.js (ชั้นหน้าเว็บคือ required, ชั้น backend คือ Field ใน models.py)
+// ---------------------------------------------------------------
+function validateJournal(journal) {
+	if (!journal.place_id) return 'Please select a place';
+	if (!journal.title) return 'Please enter a title';
+	if (journal.title.length > 100) return 'Title must be 100 characters or fewer';
+	if (!(journal.rating >= 1 && journal.rating <= 5)) return 'Rating must be between 1 and 5';
+	if (journal.note.length > 500) return 'Note must be 500 characters or fewer';
+	if (journal.visited_at && new Date(journal.visited_at) > new Date()) return 'Visit date cannot be in the future';
 	return null;
 }
 
-async function sendToApi(fetch, path, method, body) {
-	const res = await fetch(`${API_URL}${path}`, {
-		method,
-		headers: body ? { 'Content-Type': 'application/json' } : undefined,
-		body: body ? JSON.stringify(body) : undefined
-	});
-	if (!res.ok) {
-		const err = await res.json().catch(() => null);
-		const message = typeof err?.detail === 'string' ? err.detail : `FastAPI error (${res.status})`;
-		return fail(res.status, { message });
+// ใช้ก่อน update และ delete: id ถูกต้อง, journal มีจริง (ยังไม่ถูกลบ), เป็นของผู้ใช้คนนี้
+async function checkOwnJournal(fetch, id) {
+	if (!id || Number.isNaN(Number(id))) {
+		return { problem: fail(400, { message: 'Invalid journal ID' }) };
 	}
-	return { success: true };
+	const journal = await findOne(`/journals/${id}`, fetch);
+	if (!journal) {
+		return { problem: fail(404, { message: 'Journal not found or already deleted' }) };
+	}
+	if (journal.user_id !== CURRENT_USER_ID) {
+		return { problem: fail(403, { message: 'You can only edit or delete your own journals' }) };
+	}
+	return { journal };
 }
 
 export const actions = {
+	// CREATE
 	createJournal: async ({ request, fetch }) => {
 		const journal = readJournal(await request.formData());
-		const message = validate(journal);
+		const message = validateJournal(journal);
 		if (message) return fail(422, { message });
-		return sendToApi(fetch, '/journals/', 'POST', journal);
+		return send(fetch, '/journals/', 'POST', journal);
 	},
 
+	// UPDATE
 	updateJournal: async ({ request, fetch }) => {
 		const fd = await request.formData();
+		const { problem } = await checkOwnJournal(fetch, fd.get('id'));
+		if (problem) return problem;
+
 		const journal = readJournal(fd);
-		const message = validate(journal);
+		const message = validateJournal(journal);
 		if (message) return fail(422, { message });
-		return sendToApi(fetch, `/journals/${fd.get('id')}`, 'PUT', journal);
+		return send(fetch, `/journals/${fd.get('id')}`, 'PUT', journal);
 	},
 
+	// DELETE = UPDATE ให้ is_deleted เป็น true (soft delete) ข้อมูลยังอยู่ใน database
 	deleteJournal: async ({ request, fetch }) => {
 		const fd = await request.formData();
-		return sendToApi(fetch, `/journals/${fd.get('id')}`, 'DELETE');
+		const { journal, problem } = await checkOwnJournal(fetch, fd.get('id'));
+		if (problem) return problem;
+		return send(fetch, `/journals/${journal.id}`, 'PUT', { ...journal, is_deleted: true });
 	}
 };
