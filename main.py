@@ -500,13 +500,6 @@ def update_user(user_id: int, new_user: User) -> UserOut:
         detail="User not found"
     )
 
-@app.put("/users/{user_id}", status_code=status.HTTP_200_OK)
-def update_user(user_id: int, new_user: User) -> UserOut:
-    # ... (โค้ดเดิมของ update_user) ...
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="User not found"
-    )
 
 # ---------------------------------------------------------
 # วางโค้ด Block 1 (read_user_followers และ read_user_following)
@@ -584,7 +577,7 @@ def read_journals(
     limit: int = 100
 ) -> list[JournalOut]:
     with Session(engine) as session:
-        statement = select(JournalDB)
+        statement = select(JournalDB).where(JournalDB.is_deleted == False)   # [ASM6] ซ่อนที่ถูกลบ
         if user_id is not None:
             statement = statement.where(JournalDB.user_id == user_id)
         if place_id is not None:
@@ -597,7 +590,7 @@ def read_journals(
 def read_journal(journal_id: int) -> JournalOut:
     with Session(engine) as session:
         journal = session.get(JournalDB, journal_id)
-        if journal is not None:
+        if journal is not None and not journal.is_deleted:   # [ASM6] ที่ถูกลบถือว่าไม่มี
             return journal
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
@@ -631,7 +624,7 @@ def create_journal(journal: Journal) -> JournalOut:
 def update_journal(journal_id: int, new_journal: Journal) -> JournalOut:
     with Session(engine) as session:
         journal = session.get(JournalDB, journal_id)
-        if journal is None:
+        if journal is None or journal.is_deleted:   # [ASM6] แก้ journal ที่ถูกลบแล้วไม่ได้
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Journal not found"
@@ -656,7 +649,7 @@ def update_journal(journal_id: int, new_journal: Journal) -> JournalOut:
         journal.visited_at = new_journal.visited_at
         journal.image_url = new_journal.image_url
         journal.is_public = new_journal.is_public
-        journal.created_at = new_journal.created_at
+        journal.is_deleted = new_journal.is_deleted   # [ASM6] ให้ PUT ใช้ทำ soft delete ได้
         journal.updated_at = datetime.utcnow()
         session.add(journal)
         session.commit()
@@ -669,12 +662,15 @@ def update_journal(journal_id: int, new_journal: Journal) -> JournalOut:
 def delete_journal(journal_id: int):
     with Session(engine) as session:
         journal = session.get(JournalDB, journal_id)
-        if journal is None:
+        if journal is None or journal.is_deleted:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Journal not found"
             )
-        session.delete(journal)
+        # [ASM6] soft delete: ไม่ลบแถวจริง แค่ทำเครื่องหมายว่าถูกลบ
+        journal.is_deleted = True
+        journal.updated_at = datetime.utcnow()
+        session.add(journal)
         session.commit()
         return
 
@@ -690,7 +686,7 @@ def read_favorites(
     limit: int = 100
 ) -> list[FavoriteOut]:
     with Session(engine) as session:
-        statement = select(FavoriteDB)
+        statement = select(FavoriteDB).where(FavoriteDB.is_deleted == False)   # [ASM6]
         if user_id is not None:
             statement = statement.where(FavoriteDB.user_id == user_id)
         if place_id is not None:
@@ -703,7 +699,7 @@ def read_favorites(
 def read_favorite(favorite_id: int) -> FavoriteOut:
     with Session(engine) as session:
         favorite = session.get(FavoriteDB, favorite_id)
-        if favorite is not None:
+        if favorite is not None and not favorite.is_deleted:   # [ASM6]
             return favorite
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
@@ -726,24 +722,65 @@ def create_favorite(favorite: Favorite) -> FavoriteOut:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Place not found"
             )
-        new_favorite = FavoriteDB(**favorite.model_dump())
-        session.add(new_favorite)
+        # [ASM6] validation: ห้าม favorite ซ้ำ / ถ้าเคยลบไว้ให้กู้คืนแถวเดิม
+        existing = session.exec(
+            select(FavoriteDB).where(
+                FavoriteDB.user_id == favorite.user_id,
+                FavoriteDB.place_id == favorite.place_id
+            )
+        ).first()
+        if existing is not None and not existing.is_deleted:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="This place is already in your favorites"
+            )
+        if existing is not None:
+            existing.is_deleted = False
+            session.add(existing)
+            session.commit()
+            session.refresh(existing)
+            return existing
 
+        new_favorite = FavoriteDB(**favorite.model_dump(exclude={"is_deleted"}))
+        session.add(new_favorite)
         session.commit()
         session.refresh(new_favorite)
         return new_favorite
+
+
+# [ASM6] update favorite (ใช้ทำ soft delete: ส่ง is_deleted = true)
+@app.put("/favorites/{favorite_id}", status_code=status.HTTP_200_OK)
+def update_favorite(favorite_id: int, new_favorite: Favorite) -> FavoriteOut:
+    with Session(engine) as session:
+        favorite = session.get(FavoriteDB, favorite_id)
+        if favorite is None or favorite.is_deleted:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Favorite not found"
+            )
+        if new_favorite.user_id != favorite.user_id or new_favorite.place_id != favorite.place_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="user_id and place_id cannot be changed"
+            )
+        favorite.is_deleted = new_favorite.is_deleted
+        session.add(favorite)
+        session.commit()
+        session.refresh(favorite)
+        return favorite
 
 
 @app.delete("/favorites/{favorite_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_favorite(favorite_id: int):
     with Session(engine) as session:
         favorite = session.get(FavoriteDB, favorite_id)
-        if favorite is None:
+        if favorite is None or favorite.is_deleted:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Favorite not found"
             )
-        session.delete(favorite)
+        favorite.is_deleted = True   # [ASM6] soft delete
+        session.add(favorite)
         session.commit()
         return
 
@@ -918,7 +955,11 @@ def read_popular_lists(days: int = 7, limit: int = 10) -> list[PlaceListOut]:
     with Session(engine) as session:
         statement = (
             select(PlaceListDB)
-            .join(SavedListDB, isouter=True)
+            .join(
+                SavedListDB,
+                (SavedListDB.list_id == PlaceListDB.list_id) & (SavedListDB.is_deleted == False),   # [ASM6]
+                isouter=True
+            )
             .where(PlaceListDB.is_public == True)
             .group_by(PlaceListDB.list_id)
             .order_by(func.count(SavedListDB.saved_list_id).desc())
@@ -1068,7 +1109,7 @@ def read_saved_lists(
     limit: int = 100
 ) -> list[SavedListOut]:
     with Session(engine) as session:
-        statement = select(SavedListDB)
+        statement = select(SavedListDB).where(SavedListDB.is_deleted == False)   # [ASM6]
         if user_id is not None:
             statement = statement.where(SavedListDB.user_id == user_id)
         statement = statement.offset(offset).limit(limit)
@@ -1094,7 +1135,21 @@ def create_saved_list(saved_list: SavedList) -> SavedListOut:
                 detail="Cannot save your own list"
             )
             
-        new_saved_list = SavedListDB(**saved_list.model_dump())
+        # [ASM6] เคย save แล้วกดเลิก (soft delete) → กู้คืนแถวเดิม เพราะตารางห้าม user_id+list_id ซ้ำ
+        existing = session.exec(
+            select(SavedListDB).where(
+                SavedListDB.user_id == saved_list.user_id,
+                SavedListDB.list_id == saved_list.list_id
+            )
+        ).first()
+        if existing is not None and existing.is_deleted:
+            existing.is_deleted = False
+            session.add(existing)
+            session.commit()
+            session.refresh(existing)
+            return existing
+
+        new_saved_list = SavedListDB(**saved_list.model_dump(exclude={"is_deleted"}))
         session.add(new_saved_list)
         try:
             session.commit()
@@ -1111,11 +1166,34 @@ def create_saved_list(saved_list: SavedList) -> SavedListOut:
 def delete_saved_list(saved_list_id: int):
     with Session(engine) as session:
         saved_list = session.get(SavedListDB, saved_list_id)
-        if saved_list is None:
+        if saved_list is None or saved_list.is_deleted:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Saved List record not found"
             )
-        session.delete(saved_list)
+        saved_list.is_deleted = True   # [ASM6] soft delete
+        session.add(saved_list)
         session.commit()
         return
+
+
+# [ASM6] update saved list (ใช้ทำ soft delete: ส่ง is_deleted = true)
+@app.put("/saved-lists/{saved_list_id}", status_code=status.HTTP_200_OK)
+def update_saved_list(saved_list_id: int, new_saved_list: SavedList) -> SavedListOut:
+    with Session(engine) as session:
+        saved_list = session.get(SavedListDB, saved_list_id)
+        if saved_list is None or saved_list.is_deleted:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Saved List record not found"
+            )
+        if new_saved_list.user_id != saved_list.user_id or new_saved_list.list_id != saved_list.list_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="user_id and list_id cannot be changed"
+            )
+        saved_list.is_deleted = new_saved_list.is_deleted
+        session.add(saved_list)
+        session.commit()
+        session.refresh(saved_list)
+        return saved_list

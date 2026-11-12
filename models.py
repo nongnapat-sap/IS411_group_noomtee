@@ -1,6 +1,7 @@
 from typing import Optional
 from datetime import datetime
 from pydantic import BaseModel
+from pydantic import Field as PField   # [ASM6] ใช้กำหนดเงื่อนไข validation
 from sqlmodel import Field, SQLModel
 
 # =========================================================
@@ -74,10 +75,6 @@ class PlaceDB(SQLModel, table=True):
 # USER
 # =========================================================
 
-# =========================================================
-# USER
-# =========================================================
-
 class User(BaseModel):
     username: str
     name: str
@@ -132,12 +129,13 @@ class VibeDB(SQLModel, table=True):
 class Journal(BaseModel):
     user_id: int
     place_id: int
-    title: Optional[str] = None
-    rating: int
-    note: Optional[str] = None
+    title: Optional[str] = PField(default=None, max_length=100)   # [ASM6]
+    rating: int = PField(ge=1, le=5)                              # [ASM6] คะแนน 1–5 เท่านั้น
+    note: Optional[str] = PField(default=None, max_length=500)    # [ASM6]
     visited_at: Optional[datetime] = None
     image_url: Optional[str] = None
     is_public: bool = True
+    is_deleted: bool = False                                      # [ASM6] soft delete
 
 
 class JournalOut(Journal):
@@ -157,15 +155,17 @@ class JournalDB(SQLModel, table=True):
     visited_at: Optional[datetime] = None
     image_url: Optional[str] = None
     is_public: bool = True
+    is_deleted: bool = False                                      # [ASM6] soft delete
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 # =========================================================
-# Favorite
+# FAVORITE
 # =========================================================
 class Favorite(BaseModel):
     user_id: int
     place_id: int
+    is_deleted: bool = False                                      # [ASM6] soft delete
 
 
 class FavoriteOut(Favorite):
@@ -177,6 +177,7 @@ class FavoriteDB(SQLModel, table=True):
     favorite_id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int
     place_id: int
+    is_deleted: bool = False                                      # [ASM6] soft delete
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 # =========================================================
@@ -213,7 +214,7 @@ class FollowDB(SQLModel, table=True):
     __tablename__ = "follows"
     # ป้องกันการกดติดตามคนเดิมซ้ำ
     __table_args__ = (UniqueConstraint("follower_id", "following_id", name="unique_follow"),)
-    
+
     follow_id: Optional[int] = Field(default=None, primary_key=True)
     follower_id: int = Field(foreign_key="users.user_id")
     following_id: int = Field(foreign_key="users.user_id")
@@ -235,7 +236,7 @@ class PlaceListOut(PlaceList):
 
 class PlaceListDB(SQLModel, table=True):
     __tablename__ = "lists"
-    
+
     list_id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.user_id")
     list_name: str
@@ -258,7 +259,7 @@ class ListPlaceOut(ListPlace):
 class ListPlaceDB(SQLModel, table=True):
     __tablename__ = "list_places"
     # ใช้ Composite Primary Key (list_id + place_id) ป้องกันการเพิ่มสถานที่เดิมซ้ำใน List เดียวกัน
-    
+
     list_id: int = Field(foreign_key="lists.list_id", primary_key=True)
     place_id: int = Field(foreign_key="places.place_id", primary_key=True)
     position: int = 0
@@ -270,6 +271,7 @@ class ListPlaceDB(SQLModel, table=True):
 class SavedList(BaseModel):
     user_id: int
     list_id: int
+    is_deleted: bool = False                                      # [ASM6] soft delete
 
 class SavedListOut(SavedList):
     saved_list_id: int
@@ -279,8 +281,9 @@ class SavedListDB(SQLModel, table=True):
     __tablename__ = "saved_lists"
     # ป้องกันไม่ให้ User เซฟ List เดิมซ้ำหลายครั้ง
     __table_args__ = (UniqueConstraint("user_id", "list_id", name="unique_saved_list"),)
-    
+
     saved_list_id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.user_id")
     list_id: int = Field(foreign_key="lists.list_id")
+    is_deleted: bool = False                                      # [ASM6] soft delete
     created_at: datetime = Field(default_factory=datetime.utcnow)

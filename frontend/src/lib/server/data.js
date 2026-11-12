@@ -14,7 +14,7 @@ export async function getCatalog(fetch) {
 	return { places, areas, vibes, placeVibes };
 }
 
-/** ใส่ area_name และ vibes (ชื่อ) ให้แต่ละ place เพื่อให้การ์ดแสดงผลได้เลย */
+// เติมarea_name และ vibes ให้แต่ละ place เพื่อแสดงบนหน้าการ์ด
 export function decoratePlaces(places, { areas, vibes, placeVibes }) {
 	const areaName = new Map(areas.map((a) => [a.area_id, a.area_name]));
 	const vibeName = new Map(vibes.map((v) => [v.vibe_id, v.vibe_name]));
@@ -30,7 +30,7 @@ export function decoratePlaces(places, { areas, vibes, placeVibes }) {
 	}));
 }
 
-// ---------------- ผู้ใช้ ----------------
+// ---------------- User ----------------
 const formatDate = (iso) =>
 	iso
 		? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
