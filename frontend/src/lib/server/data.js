@@ -14,7 +14,7 @@ export async function getCatalog(fetch) {
 	return { places, areas, vibes, placeVibes };
 }
 
-// เติมarea_name และ vibes ให้แต่ละ place เพื่อแสดงบนหน้าการ์ด
+/** ใส่ area_name และ vibes (ชื่อ) ให้แต่ละ place เพื่อให้การ์ดแสดงผลได้เลย */
 export function decoratePlaces(places, { areas, vibes, placeVibes }) {
 	const areaName = new Map(areas.map((a) => [a.area_id, a.area_name]));
 	const vibeName = new Map(vibes.map((v) => [v.vibe_id, v.vibe_name]));
@@ -30,7 +30,7 @@ export function decoratePlaces(places, { areas, vibes, placeVibes }) {
 	}));
 }
 
-// ---------------- User ----------------
+// ---------------- ผู้ใช้ ----------------
 const formatDate = (iso) =>
 	iso
 		? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -42,8 +42,11 @@ const publicUser = (u) => ({
 	name: u.name,
 	nationality: u.nationality ?? null,
 	preferred_language: u.preferred_language ?? null,
-	profile_image_url: u.profile_image_url ?? null
+	profile_image_url: u.profile_image_url ?? null,
+	bio: u.bio ?? null
 });
+
+export { publicUser };
 
 export async function getUserData(fetch, userId, catalog) {
 	const [user, favorites, journals] = await Promise.all([
@@ -80,7 +83,7 @@ export async function getListsData(fetch, userId, catalog) {
 	]);
 	const placesOf = await Promise.all(lists.map((l) => api(`/list-places/${l.list_id}`, fetch)));
 
-	const userName = new Map(users.map((u) => [u.user_id, u.name]));
+	const userById = new Map(users.map((u) => [u.user_id, u]));
 	const vibeName = new Map(catalog.vibes.map((v) => [v.vibe_id, v.vibe_name]));
 	const vibesOfPlace = new Map();
 	for (const pv of catalog.placeVibes) {
@@ -96,9 +99,11 @@ export async function getListsData(fetch, userId, catalog) {
 			list_id: l.list_id,
 			title: l.list_name,
 			description: l.description,
+			cover_image_url: l.cover_image_url ?? null,
 			is_public: l.is_public,
 			owner_id: l.user_id,
-			owner_name: userName.get(l.user_id) ?? 'Unknown',
+			owner_name: userById.get(l.user_id)?.name ?? 'Unknown',
+			owner_avatar: userById.get(l.user_id)?.profile_image_url ?? null,
 			place_ids,
 			place_count: place_ids.length,
 			saves: saved.filter((s) => s.list_id === l.list_id).length,
@@ -120,18 +125,26 @@ export async function getListsData(fetch, userId, catalog) {
 }
 
 // ---------------- Follow ----------------
+// ใช้ /follows/ เพราะต้องรู้ follow_id ด้วย (ใช้ตอนกด Unfollow)
 export async function getFollowData(fetch, userId) {
-	const [following, followers] = await Promise.all([
-		api(`/users/${userId}/following`, fetch),
-		api(`/users/${userId}/followers`, fetch)
+	const [myFollows, myFollowers, users] = await Promise.all([
+		api(`/follows/?follower_id=${userId}`, fetch),
+		api(`/follows/?following_id=${userId}`, fetch),
+		api('/users/', fetch)
 	]);
+	const userById = new Map(users.map((u) => [u.user_id, u]));
 	return {
-		following: following.map((u) => ({
-			user_id: u.user_id,
-			name: u.name,
-			nationality: u.nationality ?? null
-		})),
-		followerCount: followers.length
+		following: myFollows
+			.map((f) => ({ follow: f, user: userById.get(f.following_id) }))
+			.filter((x) => x.user)
+			.map(({ follow, user }) => ({
+				follow_id: follow.follow_id,
+				user_id: user.user_id,
+				name: user.name,
+				nationality: user.nationality ?? null,
+				profile_image_url: user.profile_image_url ?? null
+			})),
+		followerCount: myFollowers.length
 	};
 }
 

@@ -5,6 +5,7 @@
 	let { data, form } = $props();
 
 	let showFollowing = $state(false);
+	let showCreate = $state(false); // เปิด/ปิดฟอร์มสร้าง collection
 	let imgFailed = $state(false);
 	let copied = $state(false);
 
@@ -99,9 +100,19 @@
 			<ul>
 				{#each data.following as person (person.user_id)}
 					<li>
-						<span class="mini-avatar" aria-hidden="true">{person.name[0].toUpperCase()}</span>
-						<span class="pname">{person.name}</span>
-						{#if person.nationality}<span class="pmeta">{person.nationality}</span>{/if}
+						{#if person.profile_image_url}
+							<img class="mini-avatar" src={person.profile_image_url} alt="" />
+						{:else}
+							<span class="mini-avatar" aria-hidden="true">{person.name[0].toUpperCase()}</span>
+						{/if}
+						<div class="pinfo">
+							<span class="pname">{person.name}</span>
+							{#if person.nationality}<span class="pmeta">{person.nationality}</span>{/if}
+						</div>
+						<form method="POST" action="?/unfollow">
+							<input type="hidden" name="follow_id" value={person.follow_id} />
+							<button class="unfollow">Unfollow</button>
+						</form>
 					</li>
 				{/each}
 			</ul>
@@ -168,29 +179,47 @@
 	{/if}
 </section>
 
-<!-- ---------- my list ---------- -->
+<!-- ---------- my collections ---------- -->
 <section class="stack">
 	<div class="section-head">
 		<div>
 			<p class="eyebrow">Collections you created</p>
 			<h2>My Collections</h2>
 		</div>
+		<button class="button add" onclick={() => (showCreate = !showCreate)}>
+			{showCreate ? 'Cancel' : '+ Create a Collection'}
+		</button>
 	</div>
+
+	{#if showCreate}
+		<form method="POST" action="?/createCollection" class="create-box">
+			<div class="field">
+				<label class="label has-text-grey-light" for="new-name">Collection name</label>
+				<input id="new-name" class="input" name="list_name" maxlength="60" placeholder="e.g. Best rooftops for sunset" required />
+			</div>
+			<div class="field">
+				<label class="label has-text-grey-light" for="new-desc">Description (optional)</label>
+				<textarea id="new-desc" class="textarea" name="description" maxlength="200" rows="2"></textarea>
+			</div>
+			<label class="checkbox has-text-grey-light">
+				<input type="checkbox" name="is_public" checked />
+				Public (other people can see and save it)
+			</label>
+			<div class="buttons mt-4">
+				<button class="button add">Create Collection</button>
+			</div>
+			<p class="hint">After creating it, open the collection to add places.</p>
+		</form>
+	{/if}
+
 	{#if data.myLists.length}
-		<ol class="mylists">
-			{#each data.myLists as list, i (list.list_id)}
-				<li>
-					<span class="num">#{i + 1}</span>
-					<div>
-						<h3>{list.title}</h3>
-						<p class="meta">
-							{list.place_count}
-							{list.place_count === 1 ? 'place' : 'places'} · {list.saves} saves
-						</p>
-					</div>
-				</li>
+		<div class="columns is-multiline">
+			{#each data.myLists as list (list.list_id)}
+				<div class="column is-3-desktop is-6-tablet">
+					<ListCard {list} vibeName={list.is_public ? null : 'Private'} />
+				</div>
 			{/each}
-		</ol>
+		</div>
 	{:else}
 		<p class="empty">You haven't created a collection yet.</p>
 	{/if}
@@ -382,7 +411,44 @@
 		align-items: center;
 		gap: 0.6rem;
 	}
+	.pinfo {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+	.unfollow {
+		padding: 0.2rem 0.6rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: transparent;
+		color: #cfcfcf;
+		font: inherit;
+		font-size: 0.7rem;
+		cursor: pointer;
+	}
+	.unfollow:hover {
+		border-color: #ff5c5c;
+		color: #ff5c5c;
+	}
+	.create-box {
+		margin-bottom: 1.25rem;
+		padding: 1rem 1.25rem;
+		border: 1px dashed var(--line);
+		border-radius: 12px;
+		background: var(--card);
+	}
+	.create-box .input,
+	.create-box .textarea {
+		background: #111;
+		border-color: #444;
+		color: #fff;
+	}
+	.hint {
+		color: var(--muted);
+		font-size: 0.75rem;
+	}
 	.mini-avatar {
+		object-fit: cover;
 		display: grid;
 		place-items: center;
 		flex: none;
@@ -404,13 +470,11 @@
 		font-size: 0.7rem;
 	}
 
-	.journal,
-	.mylists {
+	.journal {
 		display: grid;
 		gap: 0.75rem;
 	}
-	.journal li,
-	.mylists li {
+	.journal li {
 		display: flex;
 		gap: 1rem;
 		padding: 1rem 1.25rem;

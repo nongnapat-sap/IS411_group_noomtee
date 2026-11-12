@@ -1,6 +1,6 @@
 import { getCatalog, decoratePlaces } from '#lib/server/data.js';
 
-//ใช้แสดงผลในส่วนของคำว่า"Recommend this week" โดยให้หมุนรายการไปทีละสัปดาห์
+// "Recommend this week": หมุนรายการไปทีละสัปดาห์
 function weekly(items, n = 4) {
 	if (items.length === 0) return [];
 	const week = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));

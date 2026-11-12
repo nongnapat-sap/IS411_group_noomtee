@@ -75,6 +75,10 @@ class PlaceDB(SQLModel, table=True):
 # USER
 # =========================================================
 
+# =========================================================
+# USER
+# =========================================================
+
 class User(BaseModel):
     username: str
     name: str
@@ -160,7 +164,7 @@ class JournalDB(SQLModel, table=True):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 # =========================================================
-# FAVORITE
+# Favorite
 # =========================================================
 class Favorite(BaseModel):
     user_id: int
@@ -205,6 +209,7 @@ from sqlmodel import Field, SQLModel, UniqueConstraint
 class Follow(BaseModel):
     follower_id: int
     following_id: int
+    is_deleted: bool = False                                      # [FINAL] soft delete (unfollow)
 
 class FollowOut(Follow):
     follow_id: int
@@ -214,10 +219,11 @@ class FollowDB(SQLModel, table=True):
     __tablename__ = "follows"
     # ป้องกันการกดติดตามคนเดิมซ้ำ
     __table_args__ = (UniqueConstraint("follower_id", "following_id", name="unique_follow"),)
-
+    
     follow_id: Optional[int] = Field(default=None, primary_key=True)
     follower_id: int = Field(foreign_key="users.user_id")
     following_id: int = Field(foreign_key="users.user_id")
+    is_deleted: bool = False                                      # [FINAL] soft delete (unfollow)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 # =========================================================
@@ -225,10 +231,11 @@ class FollowDB(SQLModel, table=True):
 # =========================================================
 class PlaceList(BaseModel):
     user_id: int
-    list_name: str
-    description: Optional[str] = None
+    list_name: str = PField(min_length=1, max_length=60)          # [FINAL] validation
+    description: Optional[str] = PField(default=None, max_length=200)
     cover_image_url: Optional[str] = None
     is_public: bool = True  # True = 1 (Public), False = 0 (Private)
+    is_deleted: bool = False                                      # [FINAL] soft delete
 
 class PlaceListOut(PlaceList):
     list_id: int
@@ -236,13 +243,14 @@ class PlaceListOut(PlaceList):
 
 class PlaceListDB(SQLModel, table=True):
     __tablename__ = "lists"
-
+    
     list_id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.user_id")
     list_name: str
     description: Optional[str] = None
     cover_image_url: Optional[str] = None
     is_public: bool = True
+    is_deleted: bool = False                                      # [FINAL] soft delete
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 # =========================================================
@@ -252,6 +260,7 @@ class ListPlace(BaseModel):
     list_id: int
     place_id: int
     position: int = 0
+    is_deleted: bool = False                                      # [FINAL] soft delete
 
 class ListPlaceOut(ListPlace):
     added_at: datetime
@@ -259,10 +268,11 @@ class ListPlaceOut(ListPlace):
 class ListPlaceDB(SQLModel, table=True):
     __tablename__ = "list_places"
     # ใช้ Composite Primary Key (list_id + place_id) ป้องกันการเพิ่มสถานที่เดิมซ้ำใน List เดียวกัน
-
+    
     list_id: int = Field(foreign_key="lists.list_id", primary_key=True)
     place_id: int = Field(foreign_key="places.place_id", primary_key=True)
     position: int = 0
+    is_deleted: bool = False                                      # [FINAL] soft delete
     added_at: datetime = Field(default_factory=datetime.utcnow)
 
 # =========================================================
@@ -281,7 +291,7 @@ class SavedListDB(SQLModel, table=True):
     __tablename__ = "saved_lists"
     # ป้องกันไม่ให้ User เซฟ List เดิมซ้ำหลายครั้ง
     __table_args__ = (UniqueConstraint("user_id", "list_id", name="unique_saved_list"),)
-
+    
     saved_list_id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.user_id")
     list_id: int = Field(foreign_key="lists.list_id")

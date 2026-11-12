@@ -2,6 +2,7 @@ import { fail } from '@sveltejs/kit';
 import { CURRENT_USER_ID } from '#lib/config.js';
 import { findOne, send } from '#lib/server/api.js';
 import { getCatalog, getUserData, getListsData, getFollowData } from '#lib/server/data.js';
+import { followActions, readCollectionForm } from '#lib/server/actions.js';
 
 export async function load({ fetch }) {
 	const catalog = await getCatalog(fetch);
@@ -69,6 +70,16 @@ async function checkOwnJournal(fetch, id) {
 }
 
 export const actions = {
+	// unfollow (DELETE = UPDATE is_deleted) ใช้โค้ดร่วมจาก src/lib/server/actions.js
+	...followActions,
+
+	// CREATE: สร้าง collection ใหม่ของตัวเอง
+	createCollection: async ({ request, fetch }) => {
+		const { collection, message } = readCollectionForm(await request.formData());
+		if (message) return fail(422, { message });
+		return send(fetch, '/lists/', 'POST', { user_id: CURRENT_USER_ID, cover_image_url: null, ...collection });
+	},
+
 	// CREATE
 	createJournal: async ({ request, fetch }) => {
 		const journal = readJournal(await request.formData());
