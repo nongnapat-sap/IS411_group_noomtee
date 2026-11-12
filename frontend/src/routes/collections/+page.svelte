@@ -24,8 +24,11 @@
 </script>
 
 <div class="stack">
-	<p class="eyebrow">Lists</p>
-	<h1 class="page-title">Lists from other people</h1>
+	<p class="eyebrow">Collections</p>
+	<h1 class="page-title">Collections from other people</h1>
+<p class="page-desc">
+	A collection is a set of places someone picked around one theme, like "Best rooftops" or "Late-night food". Save a collection to keep it in your profile.
+</p>
 </div>
 
 {#if form?.message}
@@ -37,15 +40,15 @@
 		class="input search-input"
 		type="search"
 		bind:value={q}
-		placeholder="Search lists, people or vibes…"
-		aria-label="Search lists"
+		placeholder="Search collections, people or vibes…"
+		aria-label="Search collections"
 	/>
 	{#if q}
 		<button class="button clear" onclick={() => (q = '')}>Clear</button>
 	{/if}
 </div>
 
-<div class="chips stack" role="group" aria-label="Filter lists by vibe">
+<div class="chips stack" role="group" aria-label="Filter collections by vibe">
 	<button class="chip {activeVibe === null ? 'active' : ''}" onclick={() => (activeVibe = null)}>
 		All
 	</button>
@@ -75,7 +78,7 @@
 				{/each}
 			</div>
 		{:else}
-			<p class="empty">No lists found. Try a different search.</p>
+			<p class="empty">No collections found. Try a different search.</p>
 		{/if}
 	</section>
 {:else}
@@ -98,7 +101,7 @@
 
 	<section class="stack">
 		<div class="section-head">
-			<h2>All lists</h2>
+			<h2>All collections</h2>
 		</div>
 		{#if data.lists.length}
 			<div class="columns is-multiline">
@@ -110,7 +113,7 @@
 				{/each}
 			</div>
 		{:else}
-			<p class="empty">No public lists yet.</p>
+			<p class="empty">No public collections yet.</p>
 		{/if}
 	</section>
 {/if}

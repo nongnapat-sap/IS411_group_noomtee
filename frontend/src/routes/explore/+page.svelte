@@ -27,6 +27,9 @@
 <div class="stack">
 	<p class="eyebrow">Explore</p>
 	<h1 class="page-title">Find places</h1>
+<p class="page-desc">
+	Search and filter places by area or vibe. Tap "Add to Favorites" on any place to keep it in your profile.
+</p>
 </div>
 
 {#if form?.message}
@@ -69,12 +72,12 @@
 				{#if data.favoriteIdOf[place.place_id]}
 					<form method="POST" action="?/removeFavorite" class="fav-form">
 						<input type="hidden" name="favorite_id" value={data.favoriteIdOf[place.place_id]} />
-						<button class="fav-btn saved">♥ In favorites</button>
+						<button class="fav-btn saved">✕ Remove from Favorites</button>
 					</form>
 				{:else}
 					<form method="POST" action="?/addFavorite" class="fav-form">
 						<input type="hidden" name="place_id" value={place.place_id} />
-						<button class="fav-btn">♡ Add to favorites</button>
+						<button class="fav-btn">♡ Add to Favorites</button>
 					</form>
 				{/if}
 			</div>

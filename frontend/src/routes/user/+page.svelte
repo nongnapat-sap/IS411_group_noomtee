@@ -70,6 +70,7 @@
 	</div>
 	<div class="who">
 		<h1 class="page-title">{data.user.name}</h1>
+		<p class="page-desc">Your favorite places, the journal of places you visited, and the collections you made or saved.</p>
 		<p class="follow-line">
 			<span><strong>{data.followerCount}</strong> followers</span>
 			<span aria-hidden="true">•</span>
@@ -127,7 +128,7 @@
 			{/each}
 		</div>
 	{:else}
-		<p class="empty">No favourites yet. Heart a place while exploring.</p>
+		<p class="empty">No favourites yet. Add places from the Explore page.</p>
 	{/if}
 </section>
 
@@ -138,7 +139,7 @@
 			<p class="eyebrow">Places you've been</p>
 			<h2>My journal</h2>
 		</div>
-		<button class="button add" onclick={openAddModal}>+ Add journal</button>
+		<button class="button add" onclick={openAddModal}>+ Write a Journal Entry</button>
 	</div>
 	{#if data.journals.length}
 		<ol class="journal">
@@ -171,8 +172,8 @@
 <section class="stack">
 	<div class="section-head">
 		<div>
-			<p class="eyebrow">Like a playlist, but for places</p>
-			<h2>My lists</h2>
+			<p class="eyebrow">Collections you created</p>
+			<h2>My Collections</h2>
 		</div>
 	</div>
 	{#if data.myLists.length}
@@ -191,7 +192,7 @@
 			{/each}
 		</ol>
 	{:else}
-		<p class="empty">You haven't made a list yet.</p>
+		<p class="empty">You haven't created a collection yet.</p>
 	{/if}
 </section>
 
@@ -199,8 +200,8 @@
 <section class="stack">
 	<div class="section-head">
 		<div>
-			<p class="eyebrow">From other people</p>
-			<h2>Saved lists</h2>
+			<p class="eyebrow">Collections you saved from others</p>
+			<h2>Saved Collections</h2>
 		</div>
 	</div>
 	{#if data.savedLists.length}
@@ -212,7 +213,7 @@
 			{/each}
 		</div>
 	{:else}
-		<p class="empty">Lists you save from others will show up here.</p>
+		<p class="empty">Collections you save on the Collections page will show up here.</p>
 	{/if}
 </section>
 
@@ -222,7 +223,7 @@
 		<div class="modal-background" onclick={closeModal} role="button" tabindex="0" onkeypress={closeModal}></div>
 		<div class="modal-card">
 			<header class="modal-card-head dark">
-				<p class="modal-card-title has-text-white">{isEditMode ? 'Edit journal' : 'Add journal'}</p>
+				<p class="modal-card-title has-text-white">{isEditMode ? 'Edit journal' : 'Write a Journal Entry'}</p>
 				<button class="delete" aria-label="close" onclick={closeModal}></button>
 			</header>
 
@@ -272,7 +273,7 @@
 
 					<div class="buttons is-right mt-5">
 						<button type="button" class="button is-dark" onclick={closeModal}>Cancel</button>
-						<button type="submit" class="button add">{isEditMode ? 'Save changes' : 'Post journal'}</button>
+						<button type="submit" class="button add">{isEditMode ? 'Save changes' : 'Save Entry'}</button>
 					</div>
 				</form>
 			</section>

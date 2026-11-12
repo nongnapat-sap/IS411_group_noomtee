@@ -4,9 +4,9 @@
 
 	const tabs = [
 		{ href: '/', label: 'Home' },
-		{ href: '/places', label: 'Explore' },
-		{ href: '/lists', label: 'Lists' },
-		{ href: '/user', label: 'User' }
+		{ href: '/explore', label: 'Explore' },
+		{ href: '/collections', label: 'Collections' },
+		{ href: '/user', label: 'My Profile' }
 	];
 
 	const isActive = (href) => (href === '/' ? data.path === '/' : data.path.startsWith(href));

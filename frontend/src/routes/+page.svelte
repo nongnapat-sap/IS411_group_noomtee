@@ -16,8 +16,8 @@
 		shophouses, noodle soup under neon — the city your local friend would take you to.
 	</p>
 	<div class="buttons">
-		<a class="button cta" href="/places">Explore places</a>
-		<a class="button ghost" href="/lists">Browse lists</a>
+		<a class="button cta" href="/explore">Explore places</a>
+		<a class="button ghost" href="/collections">Browse collections</a>
 	</div>
 </section>
 
@@ -28,7 +28,7 @@
 			<p class="eyebrow">Recommend this week</p>
 			<h2>Places</h2>
 		</div>
-		<a class="see-all" href="/places">See all →</a>
+		<a class="see-all" href="/explore">See all →</a>
 	</div>
 	{#if data.places.length}
 		<div class="columns is-multiline">
@@ -42,7 +42,6 @@
 		<p class="empty">No places yet.</p>
 	{/if}
 </section>
-
 
 <section class="stack">
 	<div class="section-head">

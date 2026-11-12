@@ -3,7 +3,7 @@ import { CURRENT_USER_ID } from '#lib/config.js';
 import { findOne, send, api } from '#lib/server/api.js';
 import { getCatalog, getListsData } from '#lib/server/data.js';
 
-// หน้า Lists = เลือกดู list สถานที่ของคนอื่น (การค้นหา/กรองทำในหน้าเว็บ)
+// หน้า Collections = เลือกดู collection สถานที่ของคนอื่น (ใน database คือตาราง lists) (การค้นหา/กรองทำในหน้าเว็บ)
 export async function load({ fetch }) {
 	const catalog = await getCatalog(fetch);
 	const { others, savedIdOf } = await getListsData(fetch, CURRENT_USER_ID, catalog);
@@ -24,16 +24,16 @@ export const actions = {
 		const listId = Number(fd.get('list_id'));
 
 		// validation
-		if (!listId) return fail(400, { message: 'Invalid list ID' });
+		if (!listId) return fail(400, { message: 'Invalid collection ID' });
 		const list = await findOne(`/lists/${listId}`, fetch);
-		if (!list) return fail(404, { message: 'List not found' });
-		if (!list.is_public) return fail(403, { message: 'This list is private and cannot be saved' });
+		if (!list) return fail(404, { message: 'Collection not found' });
+		if (!list.is_public) return fail(403, { message: 'This collection is private and cannot be saved' });
 		if (list.user_id === CURRENT_USER_ID) {
-			return fail(400, { message: 'You cannot save your own list' });
+			return fail(400, { message: 'You cannot save your own collection' });
 		}
 		const mine = await api(`/saved-lists/?user_id=${CURRENT_USER_ID}`, fetch);
 		if (mine.some((s) => s.list_id === listId)) {
-			return fail(409, { message: `"${list.list_name}" is already in your saved lists` });
+			return fail(409, { message: `"${list.list_name}" is already in your saved collections` });
 		}
 
 		return send(fetch, '/saved-lists/', 'POST', { user_id: CURRENT_USER_ID, list_id: listId });
@@ -45,10 +45,10 @@ export const actions = {
 		const savedListId = Number(fd.get('saved_list_id'));
 
 		// validation
-		if (!savedListId) return fail(400, { message: 'Invalid saved list ID' });
+		if (!savedListId) return fail(400, { message: 'Invalid saved collection ID' });
 		const mine = await api(`/saved-lists/?user_id=${CURRENT_USER_ID}`, fetch);
 		const record = mine.find((s) => s.saved_list_id === savedListId);
-		if (!record) return fail(404, { message: 'This list is not in your saved lists' });
+		if (!record) return fail(404, { message: 'This collection is not in your saved collections' });
 
 		return send(fetch, `/saved-lists/${savedListId}`, 'PUT', { ...record, is_deleted: true });
 	}

@@ -1,5 +1,5 @@
 <script>
-	// ปุ่ม save / unsave ใต้การ์ด list
+	// ปุ่ม save / remove ใต้การ์ด collection (ใน database คือตาราง lists)
 	// savedListId มีค่า = save ไว้แล้ว → ส่งไป unsaveList, ไม่มีค่า → ส่งไป saveList
 	let { list, savedListId = undefined } = $props();
 </script>
@@ -7,12 +7,12 @@
 {#if savedListId}
 	<form method="POST" action="?/unsaveList">
 		<input type="hidden" name="saved_list_id" value={savedListId} />
-		<button class="save-btn saved">✓ Saved</button>
+		<button class="save-btn saved">✕ Remove from My Collections</button>
 	</form>
 {:else}
 	<form method="POST" action="?/saveList">
 		<input type="hidden" name="list_id" value={list.list_id} />
-		<button class="save-btn">+ Save list</button>
+		<button class="save-btn">+ Save this Collection</button>
 	</form>
 {/if}
 

@@ -7,6 +7,9 @@
 <div class="stack">
 	<p class="eyebrow">Areas</p>
 	<h1 class="page-title">Neighbourhoods of Bangkok</h1>
+<p class="page-desc">
+	Pick a neighbourhood to see every place in that area.
+</p>
 </div>
 
 {#if data.areas.length}

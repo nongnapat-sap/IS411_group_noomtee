@@ -6,12 +6,10 @@
 	--line: #2a2a2a;
 	--muted: #8f8f8f;
 }
-
 body {
 	background: #000;
 	color: #fff;
 }
-
 .eyebrow {
 	color: var(--lime);
 	font-size: 0.7rem;
@@ -19,7 +17,6 @@ body {
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
 }
-
 .page-title {
 	color: #fff;
 	font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -27,7 +24,6 @@ body {
 	letter-spacing: -0.02em;
 	line-height: 1.1;
 }
-
 .section-head {
 	display: flex;
 	align-items: baseline;
@@ -35,25 +31,21 @@ body {
 	gap: 1rem;
 	margin-bottom: 1rem;
 }
-
 .section-head h2 {
 	color: #fff;
 	font-size: 1.25rem;
 	font-weight: 700;
 }
-
 .see-all {
 	color: var(--lime);
 	font-size: 0.8rem;
 	font-weight: 700;
 }
-
 .chips {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5rem;
 }
-
 .chip {
 	display: inline-flex;
 	align-items: center;
@@ -69,18 +61,15 @@ body {
 	cursor: pointer;
 	transition: border-color 0.15s, color 0.15s;
 }
-
 .chip:hover {
 	border-color: var(--lime);
 	color: #fff;
 }
-
 .chip.active {
 	background: var(--lime);
 	border-color: var(--lime);
 	color: #000;
 }
-
 .empty {
 	padding: 2rem;
 	border: 1px dashed var(--line);
@@ -88,7 +77,14 @@ body {
 	color: var(--muted);
 	text-align: center;
 }
-
 .stack {
 	margin-bottom: 3rem;
+}
+
+.page-desc {
+	max-width: 40rem;
+	margin-top: 0.6rem;
+	color: #b8b8b8;
+	font-size: 0.95rem;
+	line-height: 1.6;
 }
